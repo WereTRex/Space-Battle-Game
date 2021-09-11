@@ -31,7 +31,7 @@ public class PlayerInteractionHolder : MonoBehaviour
     
     public void OnFireInputPressed(InputAction.CallbackContext context)
     {
-        fireInputPressed = context.performed;
+        fireInputPressed = context.ReadValueAsButton();
     }
     #endregion
 

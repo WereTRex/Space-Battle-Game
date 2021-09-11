@@ -44,6 +44,7 @@ public class RoomScript : MonoBehaviour
         Debug.Log("Triggered by player " + triggeringPlayerID);
 
         //Show/Create the Modal Window
+        modalWindow.SetActive(true); 
 
         //Set the Modal Window's controlling player to the playerID
         controllingPlayer = player;
@@ -54,6 +55,7 @@ public class RoomScript : MonoBehaviour
     void HideWindow()
     {
         //Hide/Destroy the Modal Window
+        modalWindow.SetActive(false);
 
         //Set the controlling player to null
         controllingPlayer.GetComponent<PlayerMovement>().inMenu = false;
