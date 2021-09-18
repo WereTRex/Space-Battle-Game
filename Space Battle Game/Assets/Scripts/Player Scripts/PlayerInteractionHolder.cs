@@ -9,7 +9,8 @@ public class PlayerInteractionHolder : MonoBehaviour
     public static event PlayerInteracted OnPlayerInteracted;
 
 
-    float inputAngle;
+    float angleInput;
+    float accelerateInput;
     bool fireInputPressed;
 
     #region New Input System
@@ -26,9 +27,14 @@ public class PlayerInteractionHolder : MonoBehaviour
 
     public void OnAngleInputPressed(InputAction.CallbackContext context)
     {
-        inputAngle = context.ReadValue<float>();
+        angleInput = context.ReadValue<float>();
     }
-    
+    public void OnAccelerationInputPressed(InputAction.CallbackContext context)
+    {
+        accelerateInput = context.ReadValue<float>();
+    }
+
+
     public void OnFireInputPressed(InputAction.CallbackContext context)
     {
         fireInputPressed = context.ReadValueAsButton();
@@ -38,7 +44,11 @@ public class PlayerInteractionHolder : MonoBehaviour
 
     public float GetAngleInput()
     {
-        return inputAngle;
+        return angleInput;
+    }
+    public float GetAccelerateInput()
+    {
+        return accelerateInput;
     }
 
     public bool GetFireInput()

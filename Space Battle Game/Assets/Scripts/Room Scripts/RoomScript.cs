@@ -9,12 +9,15 @@ public class RoomScript : MonoBehaviour
     public GameObject buttonPromptMW;
     public GameObject modalWindow;
 
+    public bool windowOpen;
+
     public GameObject controllingPlayer;
     public PlayerInteractionHolder playerInteractionHolder;
 
     private void Awake()
     {
         PlayerInteractionHolder.OnPlayerInteracted += ShowWindow;
+        ModalWindowPanel.OnCloseAction += HideWindow;
     }
 
     void Update()
@@ -29,22 +32,31 @@ public class RoomScript : MonoBehaviour
         {
             // Display the button prompt
             buttonPromptMW.SetActive(true);
+            
+            if (!buttonPromptMW.GetComponent<ButtonPromptHider>().openRequests.Contains(this.gameObject))
+                buttonPromptMW.GetComponent<ButtonPromptHider>().openRequests.Add(this.gameObject);
         }
         else
         {
             // Hide the button prompt
-            buttonPromptMW.SetActive(false);
+            if (buttonPromptMW.GetComponent<ButtonPromptHider>().openRequests.Contains(this.gameObject))
+                buttonPromptMW.GetComponent<ButtonPromptHider>().openRequests.Remove(this.gameObject);
         }
     }
 
     void ShowWindow(GameObject player, int triggeringPlayerID)
     {
         if (!playersInRoom.Contains(player)) { return; } //Ensure that the player who is pressing the button is inside the room
-        
+        if (windowOpen) { HideWindow(modalWindow); return; } //When this script is triggered BUT the window is already open (e.g. If they press the button again), close the window instead
+
+
         Debug.Log("Triggered by player " + triggeringPlayerID);
+        Debug.Log(modalWindow.name);
 
         //Show/Create the Modal Window
-        modalWindow.SetActive(true); 
+        windowOpen = true;
+        modalWindow.SetActive(true);
+        Debug.Log(modalWindow.activeInHierarchy);
 
         //Set the Modal Window's controlling player to the playerID
         controllingPlayer = player;
@@ -52,9 +64,12 @@ public class RoomScript : MonoBehaviour
         playerInteractionHolder = player.GetComponent<PlayerInteractionHolder>();
     }
 
-    void HideWindow()
+    void HideWindow(GameObject _modalWindow)
     {
+        if (_modalWindow != modalWindow) { return; }
+
         //Hide/Destroy the Modal Window
+        windowOpen = false;
         modalWindow.SetActive(false);
 
         //Set the controlling player to null
@@ -82,7 +97,7 @@ public class RoomScript : MonoBehaviour
             playersInRoom.Remove(other.gameObject);
             if (other.gameObject == controllingPlayer)
             {
-                HideWindow();
+                HideWindow(modalWindow);
             }
         }
     }

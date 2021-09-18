@@ -34,7 +34,6 @@ public class WeaponRoom : RoomScript
     {
         CheckIfDisplayButtonPrompt();
 
-
         if (controllingPlayer == null || !modalWindow.activeInHierarchy) { return; }
         //Move the current turret angle towards the target angle
         MoveCurrentAngleToTargetAngle();

@@ -22,7 +22,15 @@
                     "interactions": "Press(behavior=1)"
                 },
                 {
-                    "name": "Angle Inputs",
+                    "name": "Fire Button",
+                    "type": "Button",
+                    "id": "e4873b5f-b8c7-47ee-9e99-48167a966ae6",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Angle Input",
                     "type": "Button",
                     "id": "f5a85288-14d1-4dca-a657-fe0d17bf80cd",
                     "expectedControlType": "Button",
@@ -30,12 +38,12 @@
                     "interactions": "Press(behavior=1)"
                 },
                 {
-                    "name": "Fire Button",
+                    "name": "Acceleration Input",
                     "type": "Button",
-                    "id": "e4873b5f-b8c7-47ee-9e99-48167a966ae6",
+                    "id": "4d24c7e2-f19d-4043-9cfd-c993d0764f79",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "Press(behavior=1)"
                 }
             ],
             "bindings": [
@@ -128,72 +136,6 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "A&D",
-                    "id": "7dd816d3-f423-4117-8efe-b5d9e60ffbff",
-                    "path": "1DAxis",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Angle Inputs",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "negative",
-                    "id": "3211fbfc-4b83-4613-9ae8-b38fd2a55029",
-                    "path": "<Keyboard>/a",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard",
-                    "action": "Angle Inputs",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "positive",
-                    "id": "98e7edd5-215d-4e27-8af6-fb6db58b843d",
-                    "path": "<Keyboard>/d",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard",
-                    "action": "Angle Inputs",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "Controller",
-                    "id": "472cb916-5684-4dae-b904-924eed9c9718",
-                    "path": "1DAxis",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Angle Inputs",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "negative",
-                    "id": "566d5982-9540-45ca-8c4d-680bbdb0b2f1",
-                    "path": "<Gamepad>/leftStick/left",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Controller",
-                    "action": "Angle Inputs",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "positive",
-                    "id": "d57b41cc-6f07-42de-9297-8660f515a913",
-                    "path": "<Gamepad>/leftStick/right",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Controller",
-                    "action": "Angle Inputs",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
                     "name": "",
                     "id": "5757cf58-066e-4aa3-b6bd-c0bcdb4b67b1",
                     "path": "<Keyboard>/space",
@@ -214,6 +156,138 @@
                     "action": "Fire Button",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "A&D",
+                    "id": "7dd816d3-f423-4117-8efe-b5d9e60ffbff",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Angle Input",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "3211fbfc-4b83-4613-9ae8-b38fd2a55029",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Angle Input",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "98e7edd5-215d-4e27-8af6-fb6db58b843d",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Angle Input",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Controller",
+                    "id": "472cb916-5684-4dae-b904-924eed9c9718",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Angle Input",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "566d5982-9540-45ca-8c4d-680bbdb0b2f1",
+                    "path": "<Gamepad>/leftStick/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Controller",
+                    "action": "Angle Input",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "d57b41cc-6f07-42de-9297-8660f515a913",
+                    "path": "<Gamepad>/leftStick/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Controller",
+                    "action": "Angle Input",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "W&D",
+                    "id": "06a98dcb-0540-4c03-bc92-3c472219caf2",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Acceleration Input",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "b7f835ab-c2dc-4b2b-8b05-83e5253dd035",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Acceleration Input",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "0af2430a-b5a9-410d-8e8b-c1b459d4ef29",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Acceleration Input",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Controller (L2/R2)",
+                    "id": "b85bdb9b-9864-4082-851e-23340d4a2d5f",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Acceleration Input",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "c91d266b-fb1c-4117-bc76-cb8393d05cdd",
+                    "path": "<Gamepad>/leftTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Acceleration Input",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "29e6f83e-c2c3-4671-9284-d5d3e4cf8824",
+                    "path": "<Gamepad>/leftTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Acceleration Input",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         }
