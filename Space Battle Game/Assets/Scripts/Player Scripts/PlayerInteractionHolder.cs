@@ -12,6 +12,7 @@ public class PlayerInteractionHolder : MonoBehaviour
     float angleInput;
     float accelerateInput;
     bool fireInputPressed;
+    bool spacePressed;
 
     #region New Input System
     //Note: This is being used as an event while the others aren't as it needs to pass out multiple variables rather than just a single one
@@ -39,6 +40,12 @@ public class PlayerInteractionHolder : MonoBehaviour
     {
         fireInputPressed = context.ReadValueAsButton();
     }
+
+    public void OnSpacePressed(InputAction.CallbackContext context)
+    {
+        spacePressed = context.ReadValueAsButton();
+        Debug.Log(spacePressed);
+    }
     #endregion
 
 
@@ -54,5 +61,10 @@ public class PlayerInteractionHolder : MonoBehaviour
     public bool GetFireInput()
     {
         return fireInputPressed;
+    }
+
+    public bool GetSpacePressed()
+    {
+        return spacePressed;
     }
 }

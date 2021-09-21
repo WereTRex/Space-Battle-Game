@@ -44,6 +44,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Press(behavior=1)"
+                },
+                {
+                    "name": "Decelerate",
+                    "type": "Button",
+                    "id": "ae46f365-b282-4dbd-b106-4cc489882b36",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(behavior=1)"
                 }
             ],
             "bindings": [
@@ -288,6 +296,28 @@
                     "action": "Acceleration Input",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "b94d0838-95cb-4742-88d6-9bdf43ec5830",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Decelerate",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "25ead58a-802f-40f1-b8b4-6af935ebf308",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Controller",
+                    "action": "Decelerate",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }

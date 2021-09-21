@@ -18,6 +18,10 @@ public class Helm : RoomScript
     [SerializeField] float rotationDrag = 1f;
 
 
+    [SerializeField] bool fullStop;
+    [SerializeField] float fullStopSpeed;
+
+
     float angleInput;
     float accelerationInput;
 
@@ -62,6 +66,11 @@ public class Helm : RoomScript
 
 
         //Optional: If the player presses space then decelerate/accelerate them towards 0 and when it gets within 1f make it 0 (Autopilot brake)
+        if (fullStop)
+        {
+            Debug.Log(0.9f * Time.deltaTime);
+            restOfLevelRb2D.velocity = restOfLevelRb2D.velocity * (1-(0.9f * Time.deltaTime));
+        }
     }
 
 
@@ -72,6 +81,9 @@ public class Helm : RoomScript
 
         // Angle Input (A&D)
         angleInput = playerInteractionHolder.GetAngleInput();
+
+        // Full Stop (Space)
+        fullStop = playerInteractionHolder.GetSpacePressed();
     }
 
     void UpdateUI()

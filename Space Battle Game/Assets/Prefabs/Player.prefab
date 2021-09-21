@@ -233,6 +233,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 4d24c7e2-f19d-4043-9cfd-c993d0764f79
     m_ActionName: Player/Acceleration Input[/Keyboard/s,/Keyboard/w]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3232679235801533068}
+        m_TargetAssemblyTypeName: PlayerInteractionHolder, Assembly-CSharp
+        m_MethodName: OnSpacePressed
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: ae46f365-b282-4dbd-b106-4cc489882b36
+    m_ActionName: Player/Decelerate[/Keyboard/space]
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: Keyboard
   m_DefaultActionMap: Player
