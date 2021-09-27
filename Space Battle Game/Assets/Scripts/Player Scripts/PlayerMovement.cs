@@ -7,7 +7,6 @@ using UnityEngine.InputSystem;
 public class PlayerMovement : MonoBehaviour
 {
     public float moveSpeed = 5f;
-    public Rigidbody2D rb;
 
     Vector2 movementInput = Vector2.zero;
 
@@ -25,6 +24,6 @@ public class PlayerMovement : MonoBehaviour
         if (inMenu) { return; }
 
         //Movement
-        rb.MovePosition(rb.position + movementInput * moveSpeed * Time.fixedDeltaTime);
+        transform.localPosition += new Vector3 ((movementInput.x * moveSpeed * Time.fixedDeltaTime), (movementInput.y * moveSpeed * Time.fixedDeltaTime), 0);
     }
 }

@@ -5,14 +5,21 @@ using UnityEngine;
 [System.Serializable]
 public class RoomScript : MonoBehaviour
 {
+    
     public List<GameObject> playersInRoom;
     public GameObject buttonPromptMW;
+    
+    [Space(20)]
+    [Header("Modal Window Varaibles")]
     public GameObject modalWindow;
-
     public bool windowOpen;
 
+    [Space(20)]
+    [Header("Player Based Varaibles")]
     public GameObject controllingPlayer;
     public PlayerInteractionHolder playerInteractionHolder;
+
+    [Tooltip("Set to 0 for no change")] [Min(0)] public int cameraTargetSize;
 
     private void Awake()
     {
@@ -58,7 +65,14 @@ public class RoomScript : MonoBehaviour
         modalWindow.SetActive(true);
         Debug.Log(modalWindow.activeInHierarchy);
 
+        //Move the player's camera to the desired position
+        if (cameraTargetSize != 0)
+        {
+            player.GetComponent<PlayerInformationHolder>().GetPlayerCameraGO().GetComponent<CameraController>().ZoomCameraOut(cameraTargetSize);
+        }
+
         //Set the Modal Window's controlling player to the playerID
+        Debug.Log("Reached the assigning of the controlling player");
         controllingPlayer = player;
         controllingPlayer.GetComponent<PlayerMovement>().inMenu = true;
         playerInteractionHolder = player.GetComponent<PlayerInteractionHolder>();
@@ -71,6 +85,9 @@ public class RoomScript : MonoBehaviour
         //Hide/Destroy the Modal Window
         windowOpen = false;
         modalWindow.SetActive(false);
+
+        //Revert the player's camera to its normal size
+        controllingPlayer.GetComponent<PlayerInformationHolder>().GetPlayerCameraGO().GetComponent<CameraController>().RevertToOrigonalSize();
 
         //Set the controlling player to null
         controllingPlayer.GetComponent<PlayerMovement>().inMenu = false;

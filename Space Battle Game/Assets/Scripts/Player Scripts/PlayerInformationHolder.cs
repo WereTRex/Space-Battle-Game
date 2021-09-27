@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerInformationHolder : MonoBehaviour
 {
     int playerID;
+    [SerializeField] Camera playerCam;
 
     public void SetupPlayer(int newID)
     {
@@ -15,5 +16,14 @@ public class PlayerInformationHolder : MonoBehaviour
     public int GetPlayerID()
     {
         return playerID;
+    }
+
+    public Camera GetPlayerCamera()
+    {
+        return playerCam;
+    }
+    public GameObject GetPlayerCameraGO()
+    {
+        return playerCam.gameObject;
     }
 }

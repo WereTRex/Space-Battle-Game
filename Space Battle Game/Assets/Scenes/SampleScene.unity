@@ -4305,6 +4305,7 @@ MonoBehaviour:
   windowOpen: 0
   controllingPlayer: {fileID: 0}
   playerInteractionHolder: {fileID: 0}
+  cameraTargetSize: 30
   turnSpeed: 40
   projectilePrefab: {fileID: 3715892720374021932, guid: fd650e27602867b4c91bf3b2fc0ba0d9, type: 3}
   shipCenter: {fileID: 491409107}
@@ -5762,6 +5763,7 @@ MonoBehaviour:
   windowOpen: 0
   controllingPlayer: {fileID: 0}
   playerInteractionHolder: {fileID: 0}
+  cameraTargetSize: 40
   acceleration: 25000
   turnSpeed: 50
   maxRotationSpeed: 100

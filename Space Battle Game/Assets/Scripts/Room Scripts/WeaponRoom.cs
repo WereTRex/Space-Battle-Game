@@ -29,6 +29,7 @@ public class WeaponRoom : RoomScript
     [SerializeField] TextMeshProUGUI currentAngleText;
     [SerializeField] TextMeshProUGUI targetAngleText;
     
+    
 
     void Update()
     {
@@ -59,10 +60,11 @@ public class WeaponRoom : RoomScript
 
     void MoveCurrentAngleToTargetAngle()
     {
-        if (currentAngle > targetAngle - 0.2f && currentAngle < targetAngle + 0.2f) { return; } //Stops the current angle from constantly updating when it can't exaclty reach the target angle
-        
-        if (currentAngle > targetAngle)
+        if (currentAngle > targetAngle - 0.2f && currentAngle < targetAngle + 0.2f)
         {
+            //Stop the current angle from constantly updating when it can't exaclty reach the target angle
+            currentAngle = targetAngle;
+        }  else if (currentAngle > targetAngle) {
             currentAngle -= turnSpeed * Time.deltaTime;
         } else if (currentAngle < targetAngle) {
             currentAngle += turnSpeed * Time.deltaTime;
@@ -102,6 +104,7 @@ public class WeaponRoom : RoomScript
 
     void FireWeapons()
     {
+          
         Debug.Log("The weapon has been fired!");
 
         //Spawn a prefab that is facing currentDirection

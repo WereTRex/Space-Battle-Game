@@ -5,26 +5,36 @@ using TMPro;
 
 public class Helm : RoomScript
 {
+    [Header("Acceleration Variables")]
     float currentSpeed;
     [SerializeField] float acceleration;
 
 
+    [Space(20)]
+    [Header("Turning Variables")]
     float currentHeading;
     [SerializeField] float turnSpeed;
-    [SerializeField] float maxRotationSpeed;
+    [SerializeField] [Min(0)] float maxRotationSpeed;
 
+    [Space(5)]
+    //Smooth rotation variables
     [SerializeField] float horizontalInputAcceleration;
     private float zRotationVelocity;
     [SerializeField] float rotationDrag = 1f;
 
 
+    [Space(20)]
+    [Header("Full Stop Variables")]
     [SerializeField] bool fullStop;
-    [SerializeField] float fullStopSpeed;
+    [SerializeField] [Range(0f, 1f)] float fullStopSpeed = 0.1f;
 
 
     float angleInput;
     float accelerationInput;
 
+
+    [Space(20)]
+    [Header("Other Variables")]
     [SerializeField] Rigidbody2D restOfLevelRb2D;
     [SerializeField] Transform shipTransform;
     [SerializeField] Rigidbody2D rb2D;
@@ -68,8 +78,7 @@ public class Helm : RoomScript
         //Optional: If the player presses space then decelerate/accelerate them towards 0 and when it gets within 1f make it 0 (Autopilot brake)
         if (fullStop)
         {
-            Debug.Log(0.9f * Time.deltaTime);
-            restOfLevelRb2D.velocity = restOfLevelRb2D.velocity * (1-(0.9f * Time.deltaTime));
+            restOfLevelRb2D.velocity = restOfLevelRb2D.velocity * (fullStopSpeed * Time.deltaTime);
         }
     }
 
