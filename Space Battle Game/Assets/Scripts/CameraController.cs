@@ -47,8 +47,14 @@ public class CameraController : MonoBehaviour
         if (zoomToTarget)
         {
             //Smoothing Calculations
-            float frameSmoothing = zoomSmoothingValue * (targetSize - playerCam.orthographicSize);
-            if (frameSmoothing < 0) { frameSmoothing = -frameSmoothing; }
+            float frameSmoothing = 1f;
+            if (zoomSmoothingValue != 0)
+            {
+                frameSmoothing = zoomSmoothingValue * (targetSize - playerCam.orthographicSize);
+                if (frameSmoothing < 0) { frameSmoothing = -frameSmoothing; }
+            }
+
+            Debug.Log("Finished Smoothing Calcualtions");
 
             //Change the playerCam's orthographic size towards the target size (Unless it is within 0.1f of the target)
             if ((playerCam.orthographicSize <= targetSize + 0.5f) && (playerCam.orthographicSize >= targetSize - 0.5f))
@@ -64,14 +70,20 @@ public class CameraController : MonoBehaviour
             {
                 playerCam.orthographicSize -= zoomRate * frameSmoothing * Time.deltaTime;
             }
+
+            Debug.Log("Finished zooming for this frame");
         }
 
         //Moving
         if (moveToTarget)
         {
             //Smoothing Calculations
-            float frameSmoothing = movementSmoothingValue * (targetSize - playerCam.orthographicSize);
-            if (frameSmoothing < 0) { frameSmoothing = -frameSmoothing; }
+            float frameSmoothing = 1f;
+            if (zoomSmoothingValue != 0)
+            {
+                frameSmoothing = movementSmoothingValue * (targetSize - playerCam.orthographicSize);
+                if (frameSmoothing < 0) { frameSmoothing = -frameSmoothing; }
+            }
 
             if ((playerCam.transform.position.x <= targetPos.x + 0.1f && playerCam.transform.position.x >= targetPos.x - 0.1f)
                 && (playerCam.transform.position.y <= targetPos.y + 0.1f && playerCam.transform.position.y >= targetPos.y - 0.1f))

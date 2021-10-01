@@ -88,10 +88,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerCam: {fileID: 519420031}
-  targetPos: {fileID: 0}
+  targetPos: {x: 0, y: 0}
+  moveSpeed: 0
+  movementSmoothingValue: 0.1
   targetSize: 0
   zoomRate: 10
-  smoothingValue: 0.3
+  zoomSmoothingValue: 0.3
+  origonalSize: 0
 --- !u!1 &3083745463343795889
 GameObject:
   m_ObjectHideFlags: 0
@@ -144,7 +147,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 7
-  rb: {fileID: 1190868041}
   inMenu: 0
 --- !u!114 &6775362529045935716
 MonoBehaviour:

@@ -8,6 +8,7 @@ public class Helm : RoomScript
     [Header("Acceleration Variables")]
     float currentSpeed;
     [SerializeField] float acceleration;
+    [SerializeField] float maxSpeed = 30f;
 
 
     [Space(20)]
@@ -41,8 +42,9 @@ public class Helm : RoomScript
 
     [Space(20)]
     [Header("UI Variables")]
-    [SerializeField] TextMeshProUGUI currentSpeedText;
     [SerializeField] TextMeshProUGUI currentHeadingText;
+    [SerializeField] TextMeshProUGUI velocityXText, velocityYText, velocityNegXText, velocityNegYText;
+    
 
     void Update()
     {
@@ -97,9 +99,27 @@ public class Helm : RoomScript
 
     void UpdateUI()
     {
-        currentSpeed = Mathf.RoundToInt(restOfLevelRb2D.velocity.magnitude);
+        //Run through the 4 velocity directions (x, y, -x, -y)      Note: This wont work :(
+        velocityXText.text = Mathf.RoundToInt(restOfLevelRb2D.velocity.x).ToString();
+        velocityYText.text = Mathf.RoundToInt(restOfLevelRb2D.velocity.y).ToString();
+        velocityNegXText.text = Mathf.Clamp(-restOfLevelRb2D.velocity.x, 0, -restOfLevelRb2D.velocity.x).ToString();
+        velocityNegYText.text = Mathf.Clamp(-restOfLevelRb2D.velocity.y, 0, -restOfLevelRb2D.velocity.y).ToString();
 
-        currentSpeedText.text = currentSpeed.ToString() + " u/s";
-        currentHeadingText.text = currentHeading.ToString() + "°";
+        //currentHeadingText.text = currentHeading.ToString() + "°";
+    }
+
+    public Vector2 GetVelocity()
+    {
+        return restOfLevelRb2D.velocity;
+    }
+
+    public Vector2 GetPosition()
+    {
+        return restOfLevelRb2D.position;
+    }
+
+    public float GetMaxSpeed()
+    {
+        return maxSpeed;
     }
 }
