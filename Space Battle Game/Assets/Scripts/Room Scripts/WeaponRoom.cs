@@ -6,10 +6,11 @@ using TMPro;
 [System.Serializable]
 public class WeaponRoom : RoomScript
 {
+    [Space(5)]
     [Header("Angles")]
+    [SerializeField] float turnSpeed;
     float currentAngle;
     float targetAngle;
-    [SerializeField] float turnSpeed;
     [Space(20)]
 
 
@@ -35,7 +36,7 @@ public class WeaponRoom : RoomScript
     {
         CheckIfDisplayButtonPrompt();
 
-        if (controllingPlayer == null || !modalWindow.activeInHierarchy) { return; }
+        if (controllingPlayer == null || !UIWindow.activeInHierarchy) { return; }
         //Move the current turret angle towards the target angle
         MoveCurrentAngleToTargetAngle();
 
@@ -118,7 +119,7 @@ public class WeaponRoom : RoomScript
 
     void UpdateUI()
     {
-        if (modalWindow.activeInHierarchy)
+        if (UIWindow.activeInHierarchy)
         {
             if (currentAngle < 0)
                 currentAngleText.text = 0 + "°";

@@ -11,8 +11,9 @@ public class SpeedArrow : MonoBehaviour
     [SerializeField] float maxLength;
 
     Vector2 currentVelocity;
-    Vector2 currentPosition;
-    Vector2 previousPosition;
+
+    float gradient;
+    float angle;
 
     [SerializeField] Slider slider;
     [SerializeField] LineRenderer line;
@@ -23,20 +24,15 @@ public class SpeedArrow : MonoBehaviour
         if (!helm)
         {
             helm = FindObjectOfType<Helm>();
-            previousPosition = helm.GetPosition();
         }
-            
-            
-
+        
         slider.maxValue = maxLength;
-
     }
+
 
     void Update()
     {
-        currentVelocity = helm.GetVelocity();
-        Vector2 currentDirection = (currentPosition - previousPosition).normalized;
-        Debug.Log("currentDirection - " + currentDirection);
+        currentVelocity = -helm.GetVelocity();
 
 
         //length = Speed / MaxSpeed * MaxLength
@@ -45,20 +41,33 @@ public class SpeedArrow : MonoBehaviour
 
 
         //Gradient
+        CalculateGradient();
+        CalculateAngle();
 
-        /*slider.transform.parent.transform.rotation = Quaternion.Euler(0, 0, (slider.transform.rotation.x + Vector2.Dot(new Vector2(1, 1).normalized, currentVelocity.normalized)) * 360);
-        
-        Debug.Log(Vector2.Angle(Vector2.zero.normalized, currentVelocity.normalized));
-        Debug.Log("Dot - " + Vector2.Dot(new Vector2 (1, 1), currentVelocity.normalized));
-        Debug.Log("currentVelocity.normalized - " + currentVelocity.normalized);
-        Debug.Log("currentVelocity - " + currentVelocity);*/
-
-        previousPosition = helm.GetPosition();
+        slider.transform.parent.transform.rotation = Quaternion.Euler(0, 0, angle);
     }
 
-    private void OnDrawGizmos()
+    void CalculateGradient()
     {
-        Gizmos.color = Color.green;
-        Gizmos.DrawLine(new Vector3(0, 0, -10), (currentVelocity.normalized * currentLength));
+        if (currentVelocity.x != 0)
+        {
+            gradient = currentVelocity.y / currentVelocity.x;
+        }
+    }
+
+    void CalculateAngle()
+    {
+        if (currentVelocity.x > 0)
+        {
+            angle = Mathf.Atan(gradient);
+            angle = (angle * 180) / Mathf.PI;
+            if (angle < 0)
+                angle += 360;
+
+        } else if (currentVelocity.x < 0) {
+            angle = Mathf.Atan(gradient);
+            angle = (angle * 180) / Mathf.PI;
+            angle = 180 + angle;
+        }
     }
 }

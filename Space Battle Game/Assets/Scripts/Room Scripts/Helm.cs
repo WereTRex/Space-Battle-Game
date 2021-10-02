@@ -5,9 +5,10 @@ using TMPro;
 
 public class Helm : RoomScript
 {
+    [Space(5)]
     [Header("Acceleration Variables")]
-    float currentSpeed;
     [SerializeField] float acceleration;
+    float currentSpeed;
     [SerializeField] float maxSpeed = 30f;
 
 
@@ -27,7 +28,7 @@ public class Helm : RoomScript
     [Space(20)]
     [Header("Full Stop Variables")]
     [SerializeField] bool fullStop;
-    [SerializeField] [Range(0f, 1f)] float fullStopSpeed = 0.1f;
+    [SerializeField] [Range(0f, 10f)] float fullStopSpeed = 4f;
 
 
     float angleInput;
@@ -42,7 +43,6 @@ public class Helm : RoomScript
 
     [Space(20)]
     [Header("UI Variables")]
-    [SerializeField] TextMeshProUGUI currentHeadingText;
     [SerializeField] TextMeshProUGUI velocityXText, velocityYText, velocityNegXText, velocityNegYText;
     
 
@@ -57,18 +57,18 @@ public class Helm : RoomScript
     {
         CheckIfDisplayButtonPrompt();
 
-        if (controllingPlayer == null || !modalWindow.activeInHierarchy) { return; }
+        if (controllingPlayer == null) { return; }
 
         //Get player input (Used for speed & angle)
         GetPlayerInput();
 
+        //'Move' the ship by applying a force to the RigidBody2D of the rest of the level
+        restOfLevelRb2D.AddForce(-transform.right * accelerationInput * acceleration);
+        ConstrainVelocity();
+
         //Update the UI
         UpdateUI();
 
-        //'Move' the ship by applying a force to the RigidBody2D of the rest of the level
-        restOfLevelRb2D.AddForce(-transform.right * accelerationInput * acceleration);
-
-        //Check how far you moved and if it is a small amount (Or check if you are colliding with something), then reduce speed
 
         //Rotate the ship
         zRotationVelocity = zRotationVelocity * (1 - Time.deltaTime * rotationDrag);
@@ -80,7 +80,7 @@ public class Helm : RoomScript
         //Optional: If the player presses space then decelerate/accelerate them towards 0 and when it gets within 1f make it 0 (Autopilot brake)
         if (fullStop)
         {
-            restOfLevelRb2D.velocity = restOfLevelRb2D.velocity * (fullStopSpeed * Time.deltaTime);
+            restOfLevelRb2D.velocity *= 1 - (fullStopSpeed * Time.deltaTime);
         }
     }
 
@@ -100,13 +100,31 @@ public class Helm : RoomScript
     void UpdateUI()
     {
         //Run through the 4 velocity directions (x, y, -x, -y)      Note: This wont work :(
-        velocityXText.text = Mathf.RoundToInt(restOfLevelRb2D.velocity.x).ToString();
-        velocityYText.text = Mathf.RoundToInt(restOfLevelRb2D.velocity.y).ToString();
-        velocityNegXText.text = Mathf.Clamp(-restOfLevelRb2D.velocity.x, 0, -restOfLevelRb2D.velocity.x).ToString();
-        velocityNegYText.text = Mathf.Clamp(-restOfLevelRb2D.velocity.y, 0, -restOfLevelRb2D.velocity.y).ToString();
+        velocityXText.text = Mathf.RoundToInt(Mathf.Clamp(-restOfLevelRb2D.velocity.x, 0, -restOfLevelRb2D.velocity.x)).ToString();
+        velocityYText.text = Mathf.RoundToInt(Mathf.Clamp(-restOfLevelRb2D.velocity.y, 0, -restOfLevelRb2D.velocity.y)).ToString();
+        velocityNegXText.text = Mathf.RoundToInt(Mathf.Clamp(restOfLevelRb2D.velocity.x, 0, restOfLevelRb2D.velocity.x)).ToString();
+        velocityNegYText.text = Mathf.RoundToInt(Mathf.Clamp(restOfLevelRb2D.velocity.y, 0, restOfLevelRb2D.velocity.y)).ToString();
 
         //currentHeadingText.text = currentHeading.ToString() + "°";
     }
+
+    void ConstrainVelocity()
+    {
+        if (-restOfLevelRb2D.velocity.x > maxSpeed)
+        {
+            restOfLevelRb2D.velocity = new Vector2(-maxSpeed, restOfLevelRb2D.velocity.y);
+        } else if (-restOfLevelRb2D.velocity.x < -maxSpeed) {
+            restOfLevelRb2D.velocity = new Vector2(maxSpeed, restOfLevelRb2D.velocity.y);
+        }
+
+        if (-restOfLevelRb2D.velocity.y > maxSpeed)
+        {
+            restOfLevelRb2D.velocity = new Vector2(restOfLevelRb2D.velocity.x, -maxSpeed);
+        } else if (-restOfLevelRb2D.velocity.y < -maxSpeed) {
+            restOfLevelRb2D.velocity = new Vector2(restOfLevelRb2D.velocity.x, maxSpeed);
+        }
+    }
+
 
     public Vector2 GetVelocity()
     {

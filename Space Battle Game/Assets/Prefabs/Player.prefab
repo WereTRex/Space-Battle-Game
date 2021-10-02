@@ -88,13 +88,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerCam: {fileID: 519420031}
+  playerShip: {fileID: 0}
+  offsetShipRotation: 0
+  originalRotation: {x: 0, y: 0, z: 0, w: 0}
   targetPos: {x: 0, y: 0}
-  moveSpeed: 0
+  originalPos: {x: 0, y: 0}
+  moveToTarget: 0
+  moveSpeed: 20
   movementSmoothingValue: 0.1
   targetSize: 0
+  zoomToTarget: 0
   zoomRate: 10
   zoomSmoothingValue: 0.3
-  origonalSize: 0
+  originalSize: 0
 --- !u!1 &3083745463343795889
 GameObject:
   m_ObjectHideFlags: 0

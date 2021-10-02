@@ -6,12 +6,17 @@ public class CameraController : MonoBehaviour
 {
     [Header("General Variables")]
     [SerializeField] Camera playerCam;
+
+    [SerializeField] GameObject playerShip;
+    [SerializeField] bool offsetShipRotation;
+    [SerializeField] Quaternion originalRotation;
     [Space(20)]
 
 
     [Header("Moving Variables")]
     [SerializeField] Vector2 targetPos;
-    bool moveToTarget;
+    [SerializeField] Vector2 originalPos;
+    [SerializeField] bool moveToTarget;
 
     [Space(5)]
 
@@ -22,7 +27,7 @@ public class CameraController : MonoBehaviour
 
     [Header("Zoom Variables")]
     [SerializeField] float targetSize;
-    bool zoomToTarget;
+    [SerializeField] bool zoomToTarget;
 
     [Space(5)]
 
@@ -31,13 +36,30 @@ public class CameraController : MonoBehaviour
 
     [Space(5)]
 
-    [SerializeField] float origonalSize;
+    [SerializeField] float originalSize;
+
+    [Space(20)]
+
+    [Header("Layer Masks")]
+    LayerMask originalLayerMask;
+
 
     private void Start()
     {
-        if (origonalSize == 0)
-        {
-            origonalSize = playerCam.orthographicSize;
+        if (originalSize == 0) {
+            originalSize = playerCam.orthographicSize;
+        }
+        if (originalRotation == new Quaternion(0, 0, 0, 0)) {
+            originalRotation = playerCam.transform.rotation;
+        }
+        if (originalPos == new Vector2(0, 0)) {
+            originalPos = playerCam.transform.position;
+        }
+
+        originalLayerMask = playerCam.cullingMask;
+
+        if (playerShip == null) {
+            playerShip = FindObjectOfType<PlayerShip>().gameObject;
         }
     }
 
@@ -54,8 +76,6 @@ public class CameraController : MonoBehaviour
                 if (frameSmoothing < 0) { frameSmoothing = -frameSmoothing; }
             }
 
-            Debug.Log("Finished Smoothing Calcualtions");
-
             //Change the playerCam's orthographic size towards the target size (Unless it is within 0.1f of the target)
             if ((playerCam.orthographicSize <= targetSize + 0.5f) && (playerCam.orthographicSize >= targetSize - 0.5f))
             {
@@ -70,8 +90,6 @@ public class CameraController : MonoBehaviour
             {
                 playerCam.orthographicSize -= zoomRate * frameSmoothing * Time.deltaTime;
             }
-
-            Debug.Log("Finished zooming for this frame");
         }
 
         //Moving
@@ -85,16 +103,27 @@ public class CameraController : MonoBehaviour
                 if (frameSmoothing < 0) { frameSmoothing = -frameSmoothing; }
             }
 
-            if ((playerCam.transform.position.x <= targetPos.x + 0.1f && playerCam.transform.position.x >= targetPos.x - 0.1f)
-                && (playerCam.transform.position.y <= targetPos.y + 0.1f && playerCam.transform.position.y >= targetPos.y - 0.1f))
+            if ((playerCam.transform.localPosition.x <= targetPos.x + 0.1f && playerCam.transform.localPosition.x >= targetPos.x - 0.1f)
+                && (playerCam.transform.localPosition.y <= targetPos.y + 0.1f && playerCam.transform.localPosition.y >= targetPos.y - 0.1f))
             {
-                playerCam.transform.position = targetPos;
+                playerCam.transform.localPosition = new Vector3(targetPos.x, targetPos.y, playerCam.transform.position.z);
                 moveToTarget = false;
             }
 
             float step = moveSpeed * Time.deltaTime;
 
-            playerCam.transform.position = Vector2.MoveTowards(playerCam.transform.position, targetPos, step);
+            playerCam.transform.localPosition = Vector2.MoveTowards(playerCam.transform.localPosition, new Vector3 (targetPos.x, targetPos.y, playerCam.transform.position.z), step);
+            
+            playerCam.transform.position = new Vector3(playerCam.transform.position.x, playerCam.transform.position.y, -9);
+        }
+
+
+        //Offsetting Ship Rotation
+        if (offsetShipRotation)
+        {
+            playerCam.transform.rotation = Quaternion.Euler(playerCam.transform.rotation.x - playerShip.transform.rotation.x, playerCam.transform.rotation.y - playerShip.transform.rotation.y, playerCam.transform.rotation.z - playerShip.transform.rotation.z);
+        } else if (!offsetShipRotation && playerCam.transform.rotation != originalRotation) {
+            playerCam.transform.rotation = originalRotation;
         }
     }
 
@@ -103,18 +132,38 @@ public class CameraController : MonoBehaviour
         targetSize = _targetSize;
         zoomToTarget = true;
     }
-
     public void RevertToOrigonalSize()
     {
-        targetSize = origonalSize;
+        targetSize = originalSize;
         zoomToTarget = true;
     }
-
 
     public void MoveCameraPosition(Vector2 _targetPosition)
     {
         targetPos = _targetPosition;
+        moveToTarget = true;
     }
+    public void RevertToOrigonalPosition()
+    {
+        targetPos = originalPos;
+        moveToTarget = true;
+    }
+
+    public void SetOffsetShipRotation(bool _offsetBool)
+    {
+        offsetShipRotation = _offsetBool;
+    }
+
+
+    public void SetCullingMask(LayerMask mask)
+    {
+        playerCam.cullingMask = mask;
+    }
+    public void RevertCullingMask()
+    {
+        playerCam.cullingMask = originalLayerMask;
+    }
+
 
     public void SetOrthographicSize(float _sizeValue)
     {
