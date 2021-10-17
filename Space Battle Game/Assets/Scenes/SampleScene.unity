@@ -5833,8 +5833,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1878066876}
   - component: {fileID: 1878066875}
+  - component: {fileID: 1878066880}
   - component: {fileID: 1878066877}
   - component: {fileID: 1878066878}
+  - component: {fileID: 1878066879}
   m_Layer: 0
   m_Name: Square
   m_TagString: Untagged
@@ -5962,6 +5964,45 @@ MonoBehaviour:
   regenerateShields: 0
   shieldRegenerationDelay: 4
   shieldRegenerationAmount: 15
+--- !u!114 &1878066879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1878066874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0471180b499c268498df418f2e8c6c1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  acceleration: 10
+  maxSpeed: 10
+  turnSpeed: 50
+  maxRotationSpeed: 50
+  rb2D: {fileID: 1878066880}
+  targetPos: {x: 120, y: -9.34}
+--- !u!50 &1878066880
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1878066874}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 10000
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &1900566865
 GameObject:
   m_ObjectHideFlags: 0
