@@ -20,7 +20,8 @@ public class WeaponRoom : RoomScript
 
     [Space(5)]
 
-    [SerializeField] float projectileSpeed;
+    [SerializeField] Weapon[] weapons;
+
     [SerializeField] float cooldownTime;
     float cooldownTimeRemaining;
     [Space(20)]
@@ -29,8 +30,8 @@ public class WeaponRoom : RoomScript
     [Header("UI Variables")]
     [SerializeField] TextMeshProUGUI currentAngleText;
     [SerializeField] TextMeshProUGUI targetAngleText;
-    
-    
+
+
 
     void Update()
     {
@@ -47,14 +48,15 @@ public class WeaponRoom : RoomScript
         UpdateUI();
 
         //Check if the fire button has been pressed & if so then fire a projectile out in the direction of currentAngle
-        if (CheckFireInput() && cooldownTimeRemaining <= 0)
+        if (CheckFireInput())
         {
-            cooldownTimeRemaining = cooldownTime;
             FireWeapons();
         }
-        if (cooldownTimeRemaining > 0)
+
+
+        foreach (Weapon weapon in weapons)
         {
-            cooldownTimeRemaining -= Time.deltaTime;
+            weapon.cooldownTimeRemaining -= 1 * Time.deltaTime;
         }
     }
 
@@ -105,15 +107,24 @@ public class WeaponRoom : RoomScript
 
     void FireWeapons()
     {
-          
-        Debug.Log("The weapon has been fired!");
+        GameObject pfBullet;
 
-        //Spawn a prefab that is facing currentDirection
-        GameObject pfBullet = Instantiate(projectilePrefab,
-            new Vector3(shipCenter.position.x, shipCenter.position.y, 7),
-            Quaternion.Euler(0, 0, currentAngle)); //Note: If you add 90 to the current angle it will make it so that 0° is straight up
+        foreach (Weapon weapon in weapons)
+        {
+            if (weapon.cooldownTimeRemaining > 0) { return; }
 
-        pfBullet.GetComponent<PlayerShipBullet>().SetupBullet(projectileSpeed);
+            //Spawn a prefab that is facing currentDirection
+            pfBullet = Instantiate(projectilePrefab,
+                new Vector3(shipCenter.position.x, shipCenter.position.y, 7),
+                Quaternion.Euler(0, 0, currentAngle)); //Note: If you add 90 to the current angle it will make it so that 0° is straight up
+
+            pfBullet.GetComponent<PlayerShipBullet>().SetupBullet(weapon.bulletSpeed, playerShip);
+            
+
+            weapon.cooldownTimeRemaining = weapon.cooldownTime;
+
+            Destroy(pfBullet, weapon.lifeTime);
+        }
     }
 
 

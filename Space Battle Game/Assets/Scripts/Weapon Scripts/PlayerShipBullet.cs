@@ -5,20 +5,35 @@ using UnityEngine;
 public class PlayerShipBullet : MonoBehaviour
 {
     float moveSpeed;
+    float damage;
+
+
+    GameObject firingObject;
 
     private void Update()
     {
         transform.position += transform.right * moveSpeed * Time.deltaTime;
     }
 
-    public void SetupBullet(float _moveSpeed)
+
+    public void SetupBullet(float _moveSpeed, GameObject _firingObject)
     {
         moveSpeed = _moveSpeed;
+        firingObject = _firingObject;
     }
+    public void SetupBullet(float _moveSpeed, Vector2 _targetPos, GameObject _firingObject)
+    {
+        moveSpeed = _moveSpeed;
+        firingObject = _firingObject;
+
+        transform.LookAt(_targetPos);
+        transform.rotation = new Quaternion(0, 0, -transform.rotation.x, transform.rotation.w);
+    }
+
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.transform.CompareTag("Player") || collision.transform.CompareTag("Player Ship")) { return; } //Stops the player's ship bullet from colliding with the ship it is fired from or from hitting the players
+        if (collision.gameObject == firingObject || (firingObject.GetComponent<PlayerShip>() && collision.CompareTag("Player"))) { return; } //Stops the shooter from hitting themself or the player ship hitting the players
 
         //Check if the collision is a target collider
         // Deal damage

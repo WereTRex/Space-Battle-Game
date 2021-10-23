@@ -51,9 +51,11 @@ public class BaseEnemy : MonoBehaviour
 
     [Space(20)]
 
+
     [Header("Other")]
     [SerializeField] EnemyHealth healthScript;
-    
+    [SerializeField] EnemyMovement movementScript;
+
     [Space(5)]
 
     [SerializeField] Transform playerShip;
@@ -70,7 +72,8 @@ public class BaseEnemy : MonoBehaviour
 
     void Start()
     {
-        healthScript = GetComponent<EnemyHealth>();
+        if (!healthScript) { healthScript = GetComponent<EnemyHealth>(); }
+        if (!movementScript) { movementScript = GetComponent<EnemyMovement>(); }
         
         currentHullHealth = maxHullHealth;
         currentSheildHealth = maxShieldHealth;
@@ -112,7 +115,9 @@ public class BaseEnemy : MonoBehaviour
         }
         else if (Vector2.Distance(transform.position, playerShip.position) < furthestWeaponRange)
         {
-            Debug.Log("Attack Target"); 
+            //Debug.Log("Attack Target");
+
+            MoveToTarget();
             AttackTarget();
         }
         else if (hullHealthPercentage < 60)
@@ -133,6 +138,17 @@ public class BaseEnemy : MonoBehaviour
         {
             Debug.Log("Idle");
             Idle();
+        }
+
+
+        //Movement
+        movementScript.SetTarget(targetPos);
+
+
+        //Weapon Cooldown
+        foreach (Weapon weapon in weapons)
+        {
+            weapon.cooldownTimeRemaining -= 1 * Time.deltaTime;
         }
     }
 
@@ -211,7 +227,29 @@ public class BaseEnemy : MonoBehaviour
     //Attack Target
     void AttackTarget()
     {
+        GameObject pfBullet;
+        
+        //Run through each weapon
+        foreach(Weapon weapon in weapons)
+        {
+            if (weapon.cooldownTimeRemaining > 0) { return; }
+            
 
+            //  Calculate, using the weapon's speed, where you'd need to aim for to hit the player based on their current speed
+            float timeToReachPlayer = Vector2.Distance(transform.position, playerShip.position) * weapon.bulletSpeed;
+            Vector2 bulletTarget = new Vector2(playerShip.position.x + (playerShip.gameObject.GetComponent<Rigidbody2D>().velocity.x * timeToReachPlayer), playerShip.position.y + (playerShip.gameObject.GetComponent<Rigidbody2D>().velocity.y * timeToReachPlayer));
+
+            Debug.Log("Bullet Target: " + bulletTarget);
+            Debug.Log("Velocity: " + playerShip.gameObject.GetComponent<Rigidbody2D>().velocity.x);
+
+            //  Instantiate the bullet
+            pfBullet = Instantiate(weapon.bulletPrefab, transform.position, transform.rotation);
+            pfBullet.GetComponent<PlayerShipBullet>().SetupBullet(weapon.bulletSpeed, bulletTarget, this.gameObject);
+
+            weapon.cooldownTimeRemaining = weapon.cooldownTime;
+
+            Destroy(pfBullet, weapon.lifeTime);
+        }
     }
 
 
@@ -220,6 +258,8 @@ public class BaseEnemy : MonoBehaviour
     {
         //Repair the hull
         healthScript.StartStopRepairingHull(true);
+
+        targetPos = transform.position;
     }
 
 
@@ -239,9 +279,9 @@ public class BaseEnemy : MonoBehaviour
     //Idle
     void Idle()
     {
-        //Choose point within map bounds
-        if (Vector2.Distance(transform.position, targetPos) > 10)
-            targetPos = new Vector2(Random.Range(-mapBounds.x, mapBounds.x), Random.Range(-mapBounds.y, mapBounds.y));
+        //Only choose new points if you are close to the current point
+        if (Vector2.Distance(transform.position, targetPos) < 10)
+            targetPos = new Vector2(Random.Range(-mapBounds.x, mapBounds.x), Random.Range(-mapBounds.y, mapBounds.y)); //Choose point within map bounds
     }
 
 
@@ -272,8 +312,8 @@ public class BaseEnemy : MonoBehaviour
     {
         foreach(Weapon weapon in weapons)
         {
-            if (weapon.range > furthestWeaponRange)
-                furthestWeaponRange = weapon.range;
+            if (weapon.fireRange > furthestWeaponRange)
+                furthestWeaponRange = weapon.fireRange;
         }
     }
 

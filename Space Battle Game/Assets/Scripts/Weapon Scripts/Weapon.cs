@@ -6,6 +6,18 @@ using UnityEngine;
 public class Weapon
 {
     public float damage;
-    public float range;
-    public float fireRate;
+    public float fireRange;
+
+    public float lifeTime;
+
+
+    public float bulletSpeed;
+    public GameObject bulletPrefab;
+
+    public bool beam;
+
+
+    [Header("Fire Rate")]
+    public float cooldownTime;
+    [Tooltip("Don't touch this variable")] public float cooldownTimeRemaining;
 }

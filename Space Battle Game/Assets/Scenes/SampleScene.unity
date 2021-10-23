@@ -4279,6 +4279,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playersInRoom: []
   buttonPromptMW: {fileID: 492714219}
+  playerShip: {fileID: 0}
   UIWindow: {fileID: 0}
   windowOpen: 0
   controllingPlayer: {fileID: 0}
@@ -4293,7 +4294,15 @@ MonoBehaviour:
   turnSpeed: 40
   projectilePrefab: {fileID: 3715892720374021932, guid: fd650e27602867b4c91bf3b2fc0ba0d9, type: 3}
   shipCenter: {fileID: 491409107}
-  projectileSpeed: 50
+  weapons:
+  - damage: 15
+    fireRange: 0
+    lifeTime: 0
+    bulletSpeed: 50
+    bulletPrefab: {fileID: 3715892720374021932, guid: fd650e27602867b4c91bf3b2fc0ba0d9, type: 3}
+    beam: 0
+    cooldownTime: 1
+    cooldownTimeRemaining: 0
   cooldownTime: 3
   currentAngleText: {fileID: 1974702599}
   targetAngleText: {fileID: 1974702598}
@@ -5743,6 +5752,7 @@ MonoBehaviour:
   playersInRoom:
   - {fileID: 0}
   buttonPromptMW: {fileID: 3857058114724497399, guid: 6ee376e6549de824ab779490e66510bc, type: 3}
+  playerShip: {fileID: 0}
   UIWindow: {fileID: 591054343}
   windowOpen: 0
   controllingPlayer: {fileID: 0}
@@ -5834,6 +5844,7 @@ GameObject:
   - component: {fileID: 1878066876}
   - component: {fileID: 1878066875}
   - component: {fileID: 1878066880}
+  - component: {fileID: 1878066881}
   - component: {fileID: 1878066877}
   - component: {fileID: 1878066878}
   - component: {fileID: 1878066879}
@@ -5903,7 +5914,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1878066874}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 80, y: 0, z: 0}
+  m_LocalPosition: {x: 103.5, y: -0.4, z: 12}
   m_LocalScale: {x: 25, y: 10, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -5924,18 +5935,29 @@ MonoBehaviour:
   moveToTargetRandomness: 30
   moveToTargetChangeTime: 2
   fleeRange: 100
-  detectionRange: 100
+  detectionRange: 200
   repairTime: 1
   repairAmount: 20
   weapons:
   - damage: 5
-    range: 20
-    fireRate: 10
+    fireRange: 25
+    lifeTime: 10
+    bulletSpeed: 50
+    bulletPrefab: {fileID: 3715892720374021932, guid: fd650e27602867b4c91bf3b2fc0ba0d9, type: 3}
+    beam: 0
+    cooldownTime: 1
+    cooldownTimeRemaining: 0
   - damage: 20
-    range: 40
-    fireRate: 2
+    fireRange: 50
+    lifeTime: 10
+    bulletSpeed: 50
+    bulletPrefab: {fileID: 3715892720374021932, guid: fd650e27602867b4c91bf3b2fc0ba0d9, type: 3}
+    beam: 0
+    cooldownTime: 2
+    cooldownTimeRemaining: 0
   furthestWeaponRange: 20
-  healthScript: {fileID: 0}
+  healthScript: {fileID: 1878066878}
+  movementScript: {fileID: 1878066879}
   playerShip: {fileID: 1725509158}
   linecastMask:
     serializedVersion: 2
@@ -5976,8 +5998,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0471180b499c268498df418f2e8c6c1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  acceleration: 10
-  maxSpeed: 10
+  acceleration: 50000
+  maxSpeed: 25
   turnSpeed: 50
   maxRotationSpeed: 50
   rb2D: {fileID: 1878066880}
@@ -6003,6 +6025,32 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!61 &1878066881
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1878066874}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
 --- !u!1 &1900566865
 GameObject:
   m_ObjectHideFlags: 0

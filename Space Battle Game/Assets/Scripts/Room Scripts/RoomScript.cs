@@ -8,6 +8,8 @@ public class RoomScript : MonoBehaviour
     
     public List<GameObject> playersInRoom;
     public GameObject buttonPromptMW;
+
+    public GameObject playerShip;
     
     [Space(20)]
     [Header("Modal Window Varaibles")]

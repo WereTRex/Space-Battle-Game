@@ -7,12 +7,13 @@ public class EnemyMovement : MonoBehaviour
 {
     //Movement
     [SerializeField] float acceleration;
-    float currentSpeed;
-    float step;
     [SerializeField] float maxSpeed;
 
+    float previousVelocity;
+    float stopDistance;
+    bool decelerate;
+
     //Rotation
-    float currentHeading;
     [SerializeField] float turnSpeed;
     [SerializeField] [Min(0)] float maxRotationSpeed;
 
@@ -24,6 +25,8 @@ public class EnemyMovement : MonoBehaviour
     
     //Other
     [SerializeField] Vector2 targetPos;
+    Vector2 previousTargetPos;
+
     Vector2 localTargetPos;
 
 
@@ -50,17 +53,32 @@ public class EnemyMovement : MonoBehaviour
 
 
         //Movement
-        //  Doesnt slow down, just stops instantly
-        /*Vector3 prevPos = transform.position;
 
-        currentSpeed += acceleration * Time.deltaTime; // instant speed
-        step = currentSpeed * Time.deltaTime; // calculate distance to move
-        transform.position = Vector3.MoveTowards(transform.position, targetPos, step);
-    
-        if (transform.position == prevPos)
+        if (rb2D.velocity.magnitude != previousVelocity || targetPos != previousTargetPos)
         {
-            currentSpeed = 0;
-        }*/
+            stopDistance = 0;
+            int steps = Mathf.RoundToInt(rb2D.velocity.magnitude / (acceleration / (rb2D.mass / 10)));
+
+            for (int i = 0; i < steps; i++)
+            {
+                stopDistance += (i + 1) * rb2D.velocity.magnitude;
+            }
+
+            decelerate = (Vector2.Distance(transform.position, targetPos) <= stopDistance);
+        }
+
+        if (decelerate)
+        {
+            rb2D.velocity *= 1 - (0.95f * Time.deltaTime);
+        } else {
+            rb2D.AddForce(transform.right * acceleration);
+        }
+
+        rb2D.velocity = new Vector2(Mathf.Clamp(rb2D.velocity.x, -maxSpeed, maxSpeed), Mathf.Clamp(rb2D.velocity.y, -maxSpeed, maxSpeed));
+
+
+        previousVelocity = rb2D.velocity.magnitude;
+        previousTargetPos = targetPos;
     }
 
 
@@ -96,9 +114,17 @@ public class EnemyMovement : MonoBehaviour
     }
 
 
+    public void SetTarget(Vector2 _targetPos)
+    {
+        targetPos = _targetPos;
+    }
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(targetPos, 5f);
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(targetPos, stopDistance);
     }
 }
