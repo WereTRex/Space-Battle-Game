@@ -66,7 +66,8 @@ public class RoomScript : MonoBehaviour
     void ShowWindow(GameObject player, int triggeringPlayerID)
     {
         if (!playersInRoom.Contains(player)) { return; } //Ensure that the player who is pressing the button is inside the room
-        if (windowOpen) { HideWindow(); return; } //When this script is triggered BUT the window is already open (e.g. If they press the button again), close the window instead
+        if (windowOpen) { if (controllingPlayer == player) { HideWindow(); } return; } //When this script is triggered BUT the window is already open (e.g. If they press the button again), close the window instead
+        
 
 
         Debug.Log("Triggered by player " + triggeringPlayerID);
@@ -74,8 +75,6 @@ public class RoomScript : MonoBehaviour
         //Show/Create the Modal Window
         windowOpen = true;
         if (UIWindow != null) { UIWindow.SetActive(true); }
-
-        
 
 
         CameraController playerCamController = player.GetComponent<PlayerInformationHolder>().GetPlayerCameraGO().GetComponent<CameraController>();

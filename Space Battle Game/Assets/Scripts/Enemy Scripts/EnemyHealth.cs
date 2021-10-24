@@ -138,4 +138,16 @@ public class EnemyHealth : MonoBehaviour
         _currentShields = currentShields;
         _maxShields = maxShields;
     }
+
+
+    public void DealDamage(float damage)
+    {
+        if (currentShields > 0)
+        {
+            currentShields -= damage;
+            if (currentShields < 0) { damage = -currentShields; } else { damage = 0; }
+        }
+
+        currentHull -= damage;
+    }
 }

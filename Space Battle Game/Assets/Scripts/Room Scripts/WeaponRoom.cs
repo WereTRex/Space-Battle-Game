@@ -37,7 +37,7 @@ public class WeaponRoom : RoomScript
     {
         CheckIfDisplayButtonPrompt();
 
-        if (controllingPlayer == null || !UIWindow.activeInHierarchy) { return; }
+        if (controllingPlayer == null) { return; }
         //Move the current turret angle towards the target angle
         MoveCurrentAngleToTargetAngle();
 
@@ -119,7 +119,6 @@ public class WeaponRoom : RoomScript
                 Quaternion.Euler(0, 0, currentAngle)); //Note: If you add 90 to the current angle it will make it so that 0° is straight up
 
             pfBullet.GetComponent<PlayerShipBullet>().SetupBullet(weapon.bulletSpeed, playerShip);
-            
 
             weapon.cooldownTimeRemaining = weapon.cooldownTime;
 
@@ -130,6 +129,8 @@ public class WeaponRoom : RoomScript
 
     void UpdateUI()
     {
+        if (UIWindow == null) { return; }
+        
         if (UIWindow.activeInHierarchy)
         {
             if (currentAngle < 0)

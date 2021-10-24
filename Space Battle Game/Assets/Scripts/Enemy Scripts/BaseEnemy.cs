@@ -45,9 +45,12 @@ public class BaseEnemy : MonoBehaviour
     [Space(20)]
 
     [Header("Weapons")]
-    [SerializeField] Weapon[] weapons;
+    [SerializeField] EnemyWeapon[] weapons;
     [SerializeField] float furthestWeaponRange;
     int previousWeaponCount;
+
+    float gradient;
+    float angle;
 
     [Space(20)]
 
@@ -146,7 +149,7 @@ public class BaseEnemy : MonoBehaviour
 
 
         //Weapon Cooldown
-        foreach (Weapon weapon in weapons)
+        foreach (EnemyWeapon weapon in weapons)
         {
             weapon.cooldownTimeRemaining -= 1 * Time.deltaTime;
         }
@@ -228,27 +231,33 @@ public class BaseEnemy : MonoBehaviour
     void AttackTarget()
     {
         GameObject pfBullet;
-        
+
         //Run through each weapon
-        foreach(Weapon weapon in weapons)
+        foreach(EnemyWeapon weapon in weapons)
         {
             if (weapon.cooldownTimeRemaining > 0) { return; }
-            
 
-            //  Calculate, using the weapon's speed, where you'd need to aim for to hit the player based on their current speed
-            float timeToReachPlayer = Vector2.Distance(transform.position, playerShip.position) * weapon.bulletSpeed;
-            Vector2 bulletTarget = new Vector2(playerShip.position.x + (playerShip.gameObject.GetComponent<Rigidbody2D>().velocity.x * timeToReachPlayer), playerShip.position.y + (playerShip.gameObject.GetComponent<Rigidbody2D>().velocity.y * timeToReachPlayer));
+            float upAngle = Quaternion.Angle(transform.rotation, Quaternion.AngleAxis(weapon.fireAngle / 2, Vector3.forward));
+            float downAngle = Quaternion.Angle(transform.rotation, Quaternion.AngleAxis(-weapon.fireAngle / 2, Vector3.forward));
 
-            Debug.Log("Bullet Target: " + bulletTarget);
-            Debug.Log("Velocity: " + playerShip.gameObject.GetComponent<Rigidbody2D>().velocity.x);
+            // Check whether the player is within the weapon's operational range
+            if (Vector2.Distance(transform.position, playerShip.position) < weapon.fireRange && (upAngle < weapon.fireAngle / 2 && downAngle > weapon.fireAngle / 2))
+            {
+                //  Calculate, using the weapon's speed, where you'd need to aim for to hit the player based on their current speed
+                float timeToReachPlayer = Vector2.Distance(transform.position, playerShip.position) * weapon.bulletSpeed;
+                Vector2 bulletTarget = new Vector2(playerShip.position.x + (playerShip.gameObject.GetComponent<Rigidbody2D>().velocity.x * timeToReachPlayer), playerShip.position.y + (playerShip.gameObject.GetComponent<Rigidbody2D>().velocity.y * timeToReachPlayer));
 
-            //  Instantiate the bullet
-            pfBullet = Instantiate(weapon.bulletPrefab, transform.position, transform.rotation);
-            pfBullet.GetComponent<PlayerShipBullet>().SetupBullet(weapon.bulletSpeed, bulletTarget, this.gameObject);
+                Debug.Log("Bullet Target: " + bulletTarget);
+                Debug.Log("Velocity: " + playerShip.gameObject.GetComponent<Rigidbody2D>().velocity.x);
 
-            weapon.cooldownTimeRemaining = weapon.cooldownTime;
+                //  Instantiate the bullet
+                pfBullet = Instantiate(weapon.bulletPrefab, weapon.firePosition.position, transform.rotation);
+                pfBullet.GetComponent<PlayerShipBullet>().SetupBullet(weapon.bulletSpeed, bulletTarget, this.gameObject);
 
-            Destroy(pfBullet, weapon.lifeTime);
+                weapon.cooldownTimeRemaining = weapon.cooldownTime;
+
+                Destroy(pfBullet, weapon.lifeTime);
+            }
         }
     }
 
@@ -310,7 +319,7 @@ public class BaseEnemy : MonoBehaviour
 
     void GetFurthestWeaponRange()
     {
-        foreach(Weapon weapon in weapons)
+        foreach(EnemyWeapon weapon in weapons)
         {
             if (weapon.fireRange > furthestWeaponRange)
                 furthestWeaponRange = weapon.fireRange;
@@ -347,5 +356,16 @@ public class BaseEnemy : MonoBehaviour
 
         Gizmos.color = Color.green;
         Gizmos.DrawSphere(targetPos, 10f);
+
+        foreach (EnemyWeapon weapon in weapons)
+        {
+            Gizmos.color = Color.red;
+
+            Vector3 upR = Quaternion.AngleAxis(-weapon.fireAngle / 2, Vector3.forward) * transform.right * weapon.fireRange;
+            Vector3 downR = Quaternion.AngleAxis(weapon.fireAngle / 2, Vector3.forward) * transform.right * weapon.fireRange;
+
+            Gizmos.DrawRay(weapon.firePosition.position, upR);
+            Gizmos.DrawRay(weapon.firePosition.position, downR);
+        }
     }
 }

@@ -20,6 +20,8 @@ public class PlayerShipBullet : MonoBehaviour
     {
         moveSpeed = _moveSpeed;
         firingObject = _firingObject;
+
+        Debug.Log("I exist!");
     }
     public void SetupBullet(float _moveSpeed, Vector2 _targetPos, GameObject _firingObject)
     {
@@ -33,13 +35,18 @@ public class PlayerShipBullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject == firingObject || (firingObject.GetComponent<PlayerShip>() && collision.CompareTag("Player"))) { return; } //Stops the shooter from hitting themself or the player ship hitting the players
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Player") && collision.gameObject.layer == LayerMask.NameToLayer("Player Ship")) { return; } //Stops the shooter from hitting themself or the player ship hitting the players
 
         //Check if the collision is a target collider
+
         // Deal damage
+        if (collision.gameObject.TryGetComponent(out EnemyHealth enemyHealth))
+        {
+            enemyHealth.DealDamage(damage);
+        }
 
         //Destroy this bullet
-        Debug.Log("We hit: " + collision.gameObject.name);
+        Debug.Log("Player's hit: " + collision.gameObject.name);
         Destroy(this.gameObject);
     }
 }
