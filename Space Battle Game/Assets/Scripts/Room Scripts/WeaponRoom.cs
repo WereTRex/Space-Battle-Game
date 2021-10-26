@@ -118,7 +118,7 @@ public class WeaponRoom : RoomScript
                 new Vector3(shipCenter.position.x, shipCenter.position.y, 7),
                 Quaternion.Euler(0, 0, currentAngle)); //Note: If you add 90 to the current angle it will make it so that 0° is straight up
 
-            pfBullet.GetComponent<PlayerShipBullet>().SetupBullet(weapon.bulletSpeed, playerShip);
+            pfBullet.GetComponent<PlayerShipBullet>().SetupBullet(weapon.damage, weapon.bulletSpeed, playerShip);
 
             weapon.cooldownTimeRemaining = weapon.cooldownTime;
 

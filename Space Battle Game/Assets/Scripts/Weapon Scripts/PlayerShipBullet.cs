@@ -10,32 +10,28 @@ public class PlayerShipBullet : MonoBehaviour
 
     GameObject firingObject;
 
+    [SerializeField] LayerMask mask;
+
+
     private void Update()
     {
         transform.position += transform.right * moveSpeed * Time.deltaTime;
     }
 
 
-    public void SetupBullet(float _moveSpeed, GameObject _firingObject)
+    public void SetupBullet(float _damage, float _moveSpeed, GameObject _firingObject)
     {
+        damage = _damage;
         moveSpeed = _moveSpeed;
         firingObject = _firingObject;
 
         Debug.Log("I exist!");
     }
-    public void SetupBullet(float _moveSpeed, Vector2 _targetPos, GameObject _firingObject)
-    {
-        moveSpeed = _moveSpeed;
-        firingObject = _firingObject;
-
-        transform.LookAt(_targetPos);
-        transform.rotation = new Quaternion(0, 0, -transform.rotation.x, transform.rotation.w);
-    }
 
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Player") && collision.gameObject.layer == LayerMask.NameToLayer("Player Ship")) { return; } //Stops the shooter from hitting themself or the player ship hitting the players
+        if (mask == (mask | (1 << collision.gameObject.layer))) { return; } //Stops the shooter from hitting specified layers
 
         //Check if the collision is a target collider
 

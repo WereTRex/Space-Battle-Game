@@ -118,7 +118,7 @@ public class BaseEnemy : MonoBehaviour
         }
         else if (Vector2.Distance(transform.position, playerShip.position) < furthestWeaponRange)
         {
-            //Debug.Log("Attack Target");
+            Debug.Log("Attack Target");
 
             MoveToTarget();
             AttackTarget();
@@ -130,12 +130,13 @@ public class BaseEnemy : MonoBehaviour
         }
         else if (Vector2.Distance(transform.position, playerShip.position) < detectionRange)
         {
-            Debug.Log("Checking LOS");
             if (CheckLOSToTarget())
             {
                 Debug.Log("Move To Target");
                 MoveToTarget();
             }
+            else
+                Debug.Log("Failed LOS Check");
         }
         else
         {
@@ -237,22 +238,23 @@ public class BaseEnemy : MonoBehaviour
         {
             if (weapon.cooldownTimeRemaining > 0) { return; }
 
-            float upAngle = Quaternion.Angle(transform.rotation, Quaternion.AngleAxis(weapon.fireAngle / 2, Vector3.forward));
-            float downAngle = Quaternion.Angle(transform.rotation, Quaternion.AngleAxis(-weapon.fireAngle / 2, Vector3.forward));
+            float upAngle = Quaternion.Angle(transform.rotation, Quaternion.AngleAxis((weapon.fireAngle / 2), Vector3.forward));
+            float downAngle = Quaternion.Angle(transform.rotation, Quaternion.AngleAxis((-weapon.fireAngle / 2), Vector3.forward));
+
 
             // Check whether the player is within the weapon's operational range
-            if (Vector2.Distance(transform.position, playerShip.position) < weapon.fireRange && (upAngle < weapon.fireAngle / 2 && downAngle > weapon.fireAngle / 2))
-            {
+            if (Vector2.Distance(transform.position, playerShip.position) < weapon.fireRange && (upAngle < (weapon.fireAngle / 2) && downAngle > (weapon.fireAngle / 2)) )
+            {                
                 //  Calculate, using the weapon's speed, where you'd need to aim for to hit the player based on their current speed
                 float timeToReachPlayer = Vector2.Distance(transform.position, playerShip.position) * weapon.bulletSpeed;
                 Vector2 bulletTarget = new Vector2(playerShip.position.x + (playerShip.gameObject.GetComponent<Rigidbody2D>().velocity.x * timeToReachPlayer), playerShip.position.y + (playerShip.gameObject.GetComponent<Rigidbody2D>().velocity.y * timeToReachPlayer));
 
                 Debug.Log("Bullet Target: " + bulletTarget);
-                Debug.Log("Velocity: " + playerShip.gameObject.GetComponent<Rigidbody2D>().velocity.x);
+                Debug.Log("Player Velocity: " + playerShip.gameObject.GetComponent<Rigidbody2D>().velocity.x);
 
                 //  Instantiate the bullet
                 pfBullet = Instantiate(weapon.bulletPrefab, weapon.firePosition.position, transform.rotation);
-                pfBullet.GetComponent<PlayerShipBullet>().SetupBullet(weapon.bulletSpeed, bulletTarget, this.gameObject);
+                pfBullet.GetComponent<EnemyShipBullet>().SetupBullet(weapon.damage, weapon.bulletSpeed, bulletTarget, this.gameObject);
 
                 weapon.cooldownTimeRemaining = weapon.cooldownTime;
 
@@ -336,8 +338,6 @@ public class BaseEnemy : MonoBehaviour
             foundLOS = true;
         }
 
-        Debug.Log(foundLOS);
-
         return foundLOS;
     }
 
@@ -361,8 +361,8 @@ public class BaseEnemy : MonoBehaviour
         {
             Gizmos.color = Color.red;
 
-            Vector3 upR = Quaternion.AngleAxis(-weapon.fireAngle / 2, Vector3.forward) * transform.right * weapon.fireRange;
-            Vector3 downR = Quaternion.AngleAxis(weapon.fireAngle / 2, Vector3.forward) * transform.right * weapon.fireRange;
+            Vector3 upR = Quaternion.AngleAxis((-weapon.fireAngle / 2), Vector3.forward) * transform.right * weapon.fireRange;
+            Vector3 downR = Quaternion.AngleAxis((weapon.fireAngle / 2), Vector3.forward) * transform.right * weapon.fireRange;
 
             Gizmos.DrawRay(weapon.firePosition.position, upR);
             Gizmos.DrawRay(weapon.firePosition.position, downR);

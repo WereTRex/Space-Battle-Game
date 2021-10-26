@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 545258768947362361}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WeaponFirePosition.2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39,7 +39,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 545258769253903634}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WeaponFirePosition.1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -75,7 +75,7 @@ GameObject:
   - component: {fileID: 545258770201480028}
   - component: {fileID: 545258770201480031}
   - component: {fileID: 545258770201480030}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Enemy Prefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -89,7 +89,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 545258770201480027}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 103.5, y: -0.4, z: 12}
   m_LocalScale: {x: 25, y: 10, z: 1}
   m_Children:
@@ -216,22 +216,24 @@ MonoBehaviour:
   repairAmount: 20
   weapons:
   - damage: 5
-    fireRange: 40
+    fireRange: 50
     fireAngle: 190
+    fireRotation: 0
     lifeTime: 10
     firePosition: {fileID: 545258769253903634}
     bulletSpeed: 50
-    bulletPrefab: {fileID: 3715892720374021932, guid: fd650e27602867b4c91bf3b2fc0ba0d9, type: 3}
+    bulletPrefab: {fileID: 5054599176176622429, guid: 08d277352add43e458bafd24a7567b07, type: 3}
     beam: 0
-    cooldownTime: 1
+    cooldownTime: 0.3
     cooldownTimeRemaining: 0
   - damage: 20
     fireRange: 100
     fireAngle: 110
+    fireRotation: 0
     lifeTime: 10
     firePosition: {fileID: 545258768947362361}
     bulletSpeed: 50
-    bulletPrefab: {fileID: 3715892720374021932, guid: fd650e27602867b4c91bf3b2fc0ba0d9, type: 3}
+    bulletPrefab: {fileID: 5054599176176622429, guid: 08d277352add43e458bafd24a7567b07, type: 3}
     beam: 0
     cooldownTime: 2
     cooldownTimeRemaining: 0
@@ -241,8 +243,8 @@ MonoBehaviour:
   playerShip: {fileID: 0}
   linecastMask:
     serializedVersion: 2
-    m_Bits: 8
-  mapBounds: {x: 100, y: 100}
+    m_Bits: 72
+  mapBounds: {x: 1000, y: 1000}
   targetPos: {x: 0, y: 0}
 --- !u!114 &545258770201480031
 MonoBehaviour:

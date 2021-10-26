@@ -25,7 +25,8 @@ public class EnemyWeapon
     public float damage;
     
     public float fireRange;
-    [Tooltip("The angle of the firing cone for the weapon")]public float fireAngle;
+    [Tooltip("The angle of the firing cone for the weapon")] public float fireAngle;
+    [Tooltip("Rotates the firing cone of the gun")] public float fireRotation;
 
     public float lifeTime;
 
