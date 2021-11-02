@@ -13,7 +13,11 @@ public class Weapon
 
     public bool beam;
 
+    [Space(5)]
+    public float turnSpeed;
+    [Tooltip("Don't touch this variable")] public float currentAngle;
 
+    [Space(5)]
     [Header("Fire Rate")]
     public float cooldownTime;
     [Tooltip("Don't touch this variable")] public float cooldownTimeRemaining;

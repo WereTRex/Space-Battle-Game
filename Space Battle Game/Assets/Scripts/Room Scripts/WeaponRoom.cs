@@ -9,8 +9,9 @@ public class WeaponRoom : RoomScript
     [Space(5)]
     [Header("Angles")]
     [SerializeField] float turnSpeed;
-    float currentAngle;
     float targetAngle;
+
+    float inputValue;
     [Space(20)]
 
 
@@ -28,13 +29,12 @@ public class WeaponRoom : RoomScript
 
 
     [Header("UI Variables")]
-    [SerializeField] TextMeshProUGUI currentAngleText;
-    [SerializeField] TextMeshProUGUI targetAngleText;
-
+    [SerializeField] WeaponUI UIScript;
+    float previousWeaponCount;
 
 
     void Update()
-    {
+    {   
         CheckIfDisplayButtonPrompt();
 
         if (controllingPlayer == null) { return; }
@@ -46,9 +46,14 @@ public class WeaponRoom : RoomScript
 
         //Update UI
         UpdateUI();
+        if (previousWeaponCount != weapons.Length)
+        {
+            StartCoroutine(UIScript.CreateAndRemoveCrosshairs(weapons.Length));
+            Debug.Log("Added/Removed Crosshairs");
+        }
 
-        //Check if the fire button has been pressed & if so then fire a projectile out in the direction of currentAngle
-        if (CheckFireInput())
+            //Check if the fire button has been pressed & if so then fire a projectile out in the direction of currentAngle
+            if (CheckFireInput())
         {
             FireWeapons();
         }
@@ -58,44 +63,57 @@ public class WeaponRoom : RoomScript
         {
             weapon.cooldownTimeRemaining -= 1 * Time.deltaTime;
         }
+
+        previousWeaponCount = weapons.Length;
     }
 
 
     void MoveCurrentAngleToTargetAngle()
     {
-        if (currentAngle > targetAngle - 0.2f && currentAngle < targetAngle + 0.2f)
+        foreach (Weapon weapon in weapons)
         {
-            //Stop the current angle from constantly updating when it can't exaclty reach the target angle
-            currentAngle = targetAngle;
-        }  else if (currentAngle > targetAngle) {
-            currentAngle -= turnSpeed * Time.deltaTime;
-        } else if (currentAngle < targetAngle) {
-            currentAngle += turnSpeed * Time.deltaTime;
+            if (weapon.currentAngle > targetAngle - 0.2f && weapon.currentAngle < targetAngle + 0.2f)
+            {
+                //Stop the current angle from constantly updating when it can't exaclty reach the target angle
+                weapon.currentAngle = targetAngle;
+            }
+            else if (weapon.currentAngle > targetAngle)
+            {
+                weapon.currentAngle -= weapon.turnSpeed * Time.deltaTime;
+            }
+            else if (weapon.currentAngle < targetAngle)
+            {
+                weapon.currentAngle += weapon.turnSpeed * Time.deltaTime;
+            }
         }
     }
 
 
     void ReadAngleInputAndUpdateTargetAngle()
     {
-        if (playerInteractionHolder.GetAngleInput() > 0.1f)
+        inputValue = playerInteractionHolder.GetAngleInput();
+
+        if (inputValue > 0.1f)
         {
-            targetAngle -= 60 * Time.deltaTime;
+            targetAngle -= turnSpeed * Time.deltaTime;
         }
-        else if (playerInteractionHolder.GetAngleInput() < -0.1f)
+        else if (inputValue < -0.1f)
         {
-            targetAngle += 60 * Time.deltaTime;
+            targetAngle += turnSpeed * Time.deltaTime;
         }
 
 
         if (targetAngle < 0)
         {
             targetAngle += 360;
-            currentAngle += 360;
+            foreach (Weapon weapon in weapons)
+                weapon.currentAngle += 360;
         }
         else if (targetAngle > 360)
         {
             targetAngle -= 360;
-            currentAngle -= 360;
+            foreach (Weapon weapon in weapons)
+                weapon.currentAngle -= 360;
         }
     }
 
@@ -116,7 +134,7 @@ public class WeaponRoom : RoomScript
             //Spawn a prefab that is facing currentDirection
             pfBullet = Instantiate(projectilePrefab,
                 new Vector3(shipCenter.position.x, shipCenter.position.y, 7),
-                Quaternion.Euler(0, 0, currentAngle)); //Note: If you add 90 to the current angle it will make it so that 0° is straight up
+                Quaternion.Euler(0, 0, weapon.currentAngle)); //Note: If you add 90 to the current angle it will make it so that 0° is straight up
 
             pfBullet.GetComponent<PlayerShipBullet>().SetupBullet(weapon.damage, weapon.bulletSpeed, playerShip);
 
@@ -133,15 +151,13 @@ public class WeaponRoom : RoomScript
         
         if (UIWindow.activeInHierarchy)
         {
-            if (currentAngle < 0)
-                currentAngleText.text = 0 + "°";
-            else if (currentAngle > 360)
-                currentAngleText.text = 360 + "°";
-            else
-                currentAngleText.text = Mathf.RoundToInt(currentAngle) + "°";
+            List<float> temp = new List<float>();
+            foreach (Weapon weapon in weapons)
+            {
+                temp.Add(weapon.currentAngle);
+            }
 
-
-            targetAngleText.text = Mathf.RoundToInt(targetAngle) + "°";
+            UIScript.RecieveValues(inputValue, turnSpeed, temp);
         }
     }
 }
