@@ -28,7 +28,7 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField] float maxShields;
 
     [Space(5)]
-    [SerializeField] bool regenerateShields;
+    //[SerializeField] bool regenerateShields;
     [Space(5)]
 
     [SerializeField] float shieldRegenerationDelay;
@@ -39,6 +39,11 @@ public class EnemyHealth : MonoBehaviour
 
     [SerializeField] float shieldRegenerationAmount;
 
+    [Space(20)]
+
+    [Header("UI")]
+    [SerializeField] HealthBar healthBar;
+
 
     void Start()
     {
@@ -46,12 +51,14 @@ public class EnemyHealth : MonoBehaviour
         currentShields = maxShields;
 
         shieldRegenerationDelayRemaining = shieldRegenerationDelay;
+
+        healthBar.Setup(maxHull, maxShields);
     }
 
     void Update()
     {
         //Hull
-        if (previousHull == currentHull)
+        if (previousHull == currentHull && currentHull > 0)
         {
             if (repairHull == true)
             {
@@ -71,13 +78,29 @@ public class EnemyHealth : MonoBehaviour
         }
 
 
-        if (hullRepairDelayRemaining <= 0)
+        if (hullRepairDelayRemaining <= 0 && currentHull > 0)
         {
             RepairHull();
         }
-        if (shieldRegenerationDelayRemaining <= 0)
+        if (shieldRegenerationDelayRemaining <= 0 && currentHull > 0)
         {
             RegenerateShields();
+        }
+
+
+        //Update UI
+        if (currentHull != previousHull) {
+            healthBar.SetHealth(currentHull);
+        }
+        if (currentShields != previousShields) {
+            healthBar.SetShields(currentShields);
+        }
+
+
+        //Dying
+        if (currentHull <= 0)
+        {
+            Die();
         }
 
         previousHull = currentHull;
@@ -149,5 +172,15 @@ public class EnemyHealth : MonoBehaviour
         }
 
         currentHull -= damage;
+    }
+
+
+
+    void Die()
+    {
+        //Play Effects
+
+        //Destroy this gameobject
+        Destroy(this.gameObject);
     }
 }

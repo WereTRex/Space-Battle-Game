@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class WeaponUI : MonoBehaviour
 {
@@ -29,13 +30,12 @@ public class WeaponUI : MonoBehaviour
         input = -_inputValue;
         orbitSpeed = _orbitSpeed;
 
-
-        Debug.Log(_currentAngles.Count);
         //Get angles for all weaponCrosshairs
         for (int i = 0; i <= weaponCrosshairs.Count - 1; i++)
         {
             weaponCrosshairs[i].position = new Vector3(this.transform.position.x + weaponCrosshairOrbitRadius, this.transform.position.y, this.transform.position.z);
             weaponCrosshairs[i].RotateAround(transform.position, Vector3.forward, _currentAngles[i]);
+            weaponCrosshairs[i].rotation = new Quaternion(0, 0, 0, weaponCrosshairs[i].rotation.w);
         }
     }
 
@@ -50,6 +50,7 @@ public class WeaponUI : MonoBehaviour
                 while (weaponCrosshairs.Count != _numberOfWeapons)
                 {
                     Transform crosshair = Instantiate(weaponCrosshairPF, this.gameObject.transform).transform;
+                    crosshair.GetComponentInChildren<TextMeshProUGUI>().text = "" + (weaponCrosshairs.Count + 1);
                     weaponCrosshairs.Add(crosshair);
                 }
             } else { //Remove

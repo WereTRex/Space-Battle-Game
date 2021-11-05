@@ -52,8 +52,8 @@ public class WeaponRoom : RoomScript
             Debug.Log("Added/Removed Crosshairs");
         }
 
-            //Check if the fire button has been pressed & if so then fire a projectile out in the direction of currentAngle
-            if (CheckFireInput())
+        //Check if the fire button has been pressed & if so then fire a projectile out in the direction of currentAngle
+        if (CheckFireInput())
         {
             FireWeapons();
         }
@@ -129,18 +129,23 @@ public class WeaponRoom : RoomScript
 
         foreach (Weapon weapon in weapons)
         {
-            if (weapon.cooldownTimeRemaining > 0) { return; }
+            if (weapon.cooldownTimeRemaining <= 0)
+            {
+                //Spawn a prefab that is facing currentDirection
+                pfBullet = Instantiate(projectilePrefab,
+                    new Vector3(shipCenter.position.x, shipCenter.position.y, 7),
+                    Quaternion.Euler(0, 0, weapon.currentAngle + playerShip.transform.eulerAngles.z - 4f)); //Note: If you add 90 to the current angle it will make it so that 0° is straight up. Note 2: I am subtracting the 4 to get it to line up with the UI
 
-            //Spawn a prefab that is facing currentDirection
-            pfBullet = Instantiate(projectilePrefab,
-                new Vector3(shipCenter.position.x, shipCenter.position.y, 7),
-                Quaternion.Euler(0, 0, weapon.currentAngle)); //Note: If you add 90 to the current angle it will make it so that 0° is straight up
+                Debug.Log("currentAngle - rotation.z: " + (weapon.currentAngle - playerShip.transform.eulerAngles.z));
+                Debug.Log("currentAngle: " + weapon.currentAngle);
+                Debug.Log("currentAngle + rotation.x: " + (weapon.currentAngle + playerShip.transform.eulerAngles.z));
 
-            pfBullet.GetComponent<PlayerShipBullet>().SetupBullet(weapon.damage, weapon.bulletSpeed, playerShip);
+                pfBullet.GetComponent<PlayerShipBullet>().SetupBullet(weapon.damage, weapon.bulletSpeed, playerShip);
 
-            weapon.cooldownTimeRemaining = weapon.cooldownTime;
+                weapon.cooldownTimeRemaining = weapon.cooldownTime;
 
-            Destroy(pfBullet, weapon.lifeTime);
+                Destroy(pfBullet, weapon.lifeTime);
+            }
         }
     }
 
