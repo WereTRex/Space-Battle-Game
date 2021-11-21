@@ -1,16 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class WeaponUI : MonoBehaviour
 {
-    [SerializeField] Transform mainCrosshair;
+    [SerializeField] RectTransform mainCrosshair;
 
     [Space(5)]
 
     [SerializeField] GameObject weaponCrosshairPF;
-    [SerializeField] List<Transform> weaponCrosshairs;
+    [SerializeField] List<RectTransform> weaponCrosshairs;
     [SerializeField] float weaponCrosshairOrbitRadius;
 
     [Space(5)]
@@ -18,10 +19,22 @@ public class WeaponUI : MonoBehaviour
     [SerializeField] float orbitSpeed;
     [SerializeField] float input;
 
+    private void OnDisable()
+    {
+        mainCrosshair.anchoredPosition = new Vector3(375, 0, 0);
+        mainCrosshair.rotation = Quaternion.Euler(0, 0, 0);
+
+        foreach (RectTransform crosshair in weaponCrosshairs)
+        {
+            Destroy(crosshair.gameObject);
+        }
+        weaponCrosshairs.Clear();
+
+    }
+
     private void Update()
     {
         mainCrosshair.RotateAround(transform.position, Vector3.forward, orbitSpeed * input * Time.deltaTime);
-
     }
 
 
@@ -33,7 +46,7 @@ public class WeaponUI : MonoBehaviour
         //Get angles for all weaponCrosshairs
         for (int i = 0; i <= weaponCrosshairs.Count - 1; i++)
         {
-            weaponCrosshairs[i].position = new Vector3(this.transform.position.x + weaponCrosshairOrbitRadius, this.transform.position.y, this.transform.position.z);
+            weaponCrosshairs[i].localPosition = new Vector3(this.transform.localPosition.x + weaponCrosshairOrbitRadius, this.transform.localPosition.y, this.transform.localPosition.z);
             weaponCrosshairs[i].RotateAround(transform.position, Vector3.forward, _currentAngles[i]);
             weaponCrosshairs[i].rotation = new Quaternion(0, 0, 0, weaponCrosshairs[i].rotation.w);
         }
@@ -49,7 +62,7 @@ public class WeaponUI : MonoBehaviour
             {
                 while (weaponCrosshairs.Count != _numberOfWeapons)
                 {
-                    Transform crosshair = Instantiate(weaponCrosshairPF, this.gameObject.transform).transform;
+                    RectTransform crosshair = Instantiate(weaponCrosshairPF, this.gameObject.transform).GetComponent<RectTransform>();
                     crosshair.GetComponentInChildren<TextMeshProUGUI>().text = "" + (weaponCrosshairs.Count + 1);
                     weaponCrosshairs.Add(crosshair);
                 }
@@ -62,5 +75,10 @@ public class WeaponUI : MonoBehaviour
         }
 
         yield return null;
+    }
+
+    public int GetNumberOfCrosshairs()
+    {
+        return weaponCrosshairs.Count;
     }
 }

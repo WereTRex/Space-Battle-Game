@@ -154,4 +154,10 @@ public class Helm : RoomScript
     {
         return maxSpeed;
     }
+
+
+    public override void GetPlayerUI()
+    {
+        UIWindow = controllingPlayer.GetComponent<PlayerInformationHolder>().GetHelmUI();
+    }
 }

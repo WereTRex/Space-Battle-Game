@@ -80,6 +80,9 @@ public class BaseEnemy : MonoBehaviour
         
         currentHullHealth = maxHullHealth;
         currentSheildHealth = maxShieldHealth;
+
+        playerShip = GameObject.Find("Blank Level/Player Ship").transform;
+        if (playerShip == null) { GameObject.FindGameObjectWithTag("Player Ship"); }
     }
 
     void Awake()
@@ -185,7 +188,7 @@ public class BaseEnemy : MonoBehaviour
         var x = Mathf.Cos(radians);
         var y = Mathf.Sin(radians);
         var pos = new Vector2(x, y);
-        pos = pos * (fleeRange * 1.1f);
+        pos = pos * (fleeRange * 1.25f);
 
         targetPos = pos;
     }
@@ -222,7 +225,7 @@ public class BaseEnemy : MonoBehaviour
         var x = Mathf.Cos(radians);
         var y = Mathf.Sin(radians);
         var pos = new Vector2(x, y);
-        pos = pos * (fleeRange * 1.1f);
+        pos = pos * (fleeRange * 1.25f);
 
         //  Set Target Pos
         targetPos = pos;

@@ -15,6 +15,7 @@ public class RoomScript : MonoBehaviour
     [Header("Modal Window Varaibles")]
     public GameObject UIWindow;
     public bool windowOpen;
+    [Tooltip("If true, the room will attempt to get the UI from the controlling player")] public bool usingPlayerUI;
 
     [Space(20)]
     [Header("Player Based Varaibles")]
@@ -69,11 +70,18 @@ public class RoomScript : MonoBehaviour
         if (windowOpen) { if (controllingPlayer == player) { HideWindow(); } return; } //When this script is triggered BUT the window is already open (e.g. If they press the button again), close the window instead
         
 
-
         Debug.Log("Triggered by player " + triggeringPlayerID);
 
+        //Set the Modal Window's controlling player to the playerID
+        Debug.Log("Reached the assigning of the controlling player");
+        controllingPlayer = player;
+        controllingPlayer.GetComponent<PlayerMovement>().inMenu = true;
+        playerInteractionHolder = player.GetComponent<PlayerInteractionHolder>();
+
+        
         //Show/Create the Modal Window
         windowOpen = true;
+        if (usingPlayerUI) { GetPlayerUI(); }
         if (UIWindow != null) { UIWindow.SetActive(true); }
 
 
@@ -90,13 +98,6 @@ public class RoomScript : MonoBehaviour
         //Fade in the ship roof & allow the playerCam to see it
         if (shipRoof != null) { shipRoof.StartFadeIn(); }
         playerCamController.SetCullingMask(mask);
-
-
-        //Set the Modal Window's controlling player to the playerID
-        Debug.Log("Reached the assigning of the controlling player");
-        controllingPlayer = player;
-        controllingPlayer.GetComponent<PlayerMovement>().inMenu = true;
-        playerInteractionHolder = player.GetComponent<PlayerInteractionHolder>();
     }
 
     void HideWindow()
@@ -121,6 +122,12 @@ public class RoomScript : MonoBehaviour
         //Set the controlling player to null
         controllingPlayer.GetComponent<PlayerMovement>().inMenu = false;
         controllingPlayer = null;
+    }
+
+    
+    public virtual void GetPlayerUI() //This will require to be overidden in any proper room scripts
+    {
+        
     }
 
     private void OnTriggerStay2D(Collider2D other)

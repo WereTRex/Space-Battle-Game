@@ -320,6 +320,44 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Game Over",
+            "id": "e5fd66a2-6cda-45ea-9c86-4f9724dcda6a",
+            "actions": [
+                {
+                    "name": "Restart",
+                    "type": "Button",
+                    "id": "b1c4b75a-d953-4cb7-8fd0-d78df74ab815",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "e4b8295a-0352-42b4-9a7a-f5997e1094d4",
+                    "path": "<Keyboard>/anyKey",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Restart",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1ec52292-c843-4d2c-8a5e-8b2b87024951",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Controller",
+                    "action": "Restart",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [

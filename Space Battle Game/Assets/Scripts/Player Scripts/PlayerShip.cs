@@ -1,12 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerShip : MonoBehaviour
 {
     [Header("Hull")]
     [SerializeField] float currentHull;
+    float currentHullPercentage;
     [SerializeField] float maxHull;
+    float previousHull;
+
+    [Space(5)]
+
+    [SerializeField] float hullRegenerationRate;
+
+    [SerializeField] float hullRegenerationDelay;
+    float hullRegenerationDelayRemaining;
+
+    [Space(5)]
+    
+    [SerializeField] int numberOfBars;
+    float hullBarPercentages;
 
     [Space(20)]
 
@@ -27,6 +42,14 @@ public class PlayerShip : MonoBehaviour
 
     [SerializeField] float shieldRegenerationAmount;
 
+    [Space(20)]
+
+
+    [Header("UI")]
+    [SerializeField] HealthBar healthBar;
+    [SerializeField] GameObject gameOverUI;
+
+
 
     void Start()
     {
@@ -34,26 +57,55 @@ public class PlayerShip : MonoBehaviour
         currentShields = maxShields;
 
         shieldRegenerationDelayRemaining = shieldRegenerationDelay;
+        hullRegenerationDelayRemaining = hullRegenerationDelay;
+
+        healthBar.Setup(maxHull, maxShields);
     }
 
     void Update()
     {
+        //Death
+        if (currentHull <= 0) { Die(); }
+        
+        
+        //Hull
+        currentHullPercentage = (100 / maxHull) * currentHull;
+        hullBarPercentages = 100 / numberOfBars;
+
+        
+        if (previousHull == currentHull)
+        {
+            hullRegenerationDelayRemaining -= 1 * Time.deltaTime;
+        } else {
+            hullRegenerationDelayRemaining = hullRegenerationDelay;
+        }
+        
+
         //Shields
         if (previousShields == currentShields)
         {
             shieldRegenerationDelayRemaining -= 1 * Time.deltaTime;
-        }
-        else
-        {
+        } else {
             shieldRegenerationDelayRemaining = shieldRegenerationDelay;
         }
+
 
         if (shieldRegenerationDelayRemaining <= 0)
         {
             RegenerateShields();
         }
+        if (hullRegenerationDelayRemaining <= 0)
+        {
+            if (CheckRepair())
+            {
+                Repair();
+            }
+        }
 
+
+        UpdateUI();
         previousShields = currentShields;
+        previousHull = currentHull;
     }
 
     public void HealHull(float healAmount)
@@ -108,5 +160,44 @@ public class PlayerShip : MonoBehaviour
         }
 
         currentHull -= damage;
+    }
+
+
+    bool CheckRepair()
+    {
+        if (!(currentHullPercentage >= 100 || currentHullPercentage <= 0))
+        {
+            if (Mathf.Ceil(currentHullPercentage) % Mathf.Ceil(hullBarPercentages) == 0)
+            {
+                //Is divisible clearly
+                return false;
+            } else {
+                //Isn't divisible clearly
+                return true;
+            }
+        }
+        return false;
+    }
+
+    void Repair()
+    {
+        currentHull += hullRegenerationRate * Time.deltaTime;
+    }
+
+
+    void UpdateUI()
+    {
+        healthBar.SetHealth(currentHull);
+        healthBar.SetShields(currentShields);
+    }
+
+    void Die()
+    {
+        //Game Over
+        gameOverUI.SetActive(true);
+
+        //Change Action Maps
+        
+        //Restart When The Key is Pressed
     }
 }
