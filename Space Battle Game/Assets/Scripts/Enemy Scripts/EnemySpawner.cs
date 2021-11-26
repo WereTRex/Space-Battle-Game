@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
+    public delegate void EnemyNumberChanged();
+    public static event EnemyNumberChanged OnEnemyNumberChanged;
+
+
     [SerializeField] Vector2 mapBounds;
 
     [SerializeField] BaseEnemy[] enemyPrefabs;
@@ -56,5 +60,15 @@ public class EnemySpawner : MonoBehaviour
             enemy.transform.parent = GameObject.Find("Blank Level/Rest Of Level").transform;
             livingEnemies.Add(enemy);
         }
+
+
+        OnEnemyNumberChanged?.Invoke();
+    }
+
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireCube(Vector3.zero, new Vector3(mapBounds.x, mapBounds.y, 0));
     }
 }

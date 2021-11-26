@@ -459,19 +459,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2ec981607ab9f348838e487efa8465e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputActions: {fileID: -944628639613478452, guid: 5faf01633658d3341bf8b6caebeac616, type: 3}
-  playerMap:
-    m_Name: Player Map
-    m_Id: 9bb395f2-0741-4aba-8d43-0371eb225544
-    m_Asset: {fileID: 0}
-    m_Actions: []
-    m_Bindings: []
-  gameOverMap:
-    m_Name: Game Over Map
-    m_Id: 813b83d0-fcf3-4609-954a-17005e282291
-    m_Asset: {fileID: 0}
-    m_Actions: []
-    m_Bindings: []
 --- !u!114 &8579303533551488336
 MonoBehaviour:
   m_ObjectHideFlags: 0

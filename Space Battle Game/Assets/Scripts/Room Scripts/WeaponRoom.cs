@@ -153,9 +153,6 @@ public class WeaponRoom : RoomScript
                     new Vector3(transform.position.x, transform.position.y, 7),
                     Quaternion.Euler(0, 0, weapon.currentAngle + playerShip.transform.eulerAngles.z)); //Note: If you add 90 to the current angle it will make it so that 0° is straight up. Note 2: I am subtracting the 4 to get it to line up with the UI
 
-                Debug.Log("currentAngle - rotation.z: " + (weapon.currentAngle - playerShip.transform.eulerAngles.z));
-                Debug.Log("currentAngle: " + weapon.currentAngle);
-                Debug.Log("currentAngle + rotation.x: " + (weapon.currentAngle + playerShip.transform.eulerAngles.z));
 
                 pfBullet.GetComponent<PlayerShipBullet>().SetupBullet(weapon.damage, weapon.bulletSpeed, playerShip);
 

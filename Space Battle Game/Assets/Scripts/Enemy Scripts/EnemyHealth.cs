@@ -45,6 +45,15 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField] HealthBar healthBar;
 
 
+    [Space(20)]
+
+    [Header("Score")]
+    [SerializeField] float scoreOnDestroy;
+
+    public delegate void EnemyDied(GameObject enemy, float scoreGain);
+    public static event EnemyDied OnEnemyDied;
+
+
     void Start()
     {
         currentHull = maxHull;
@@ -179,6 +188,9 @@ public class EnemyHealth : MonoBehaviour
     void Die()
     {
         //Play Effects
+
+        //Add Score
+        OnEnemyDied?.Invoke(this.gameObject, scoreOnDestroy);
 
         //Destroy this gameobject
         Destroy(this.gameObject);

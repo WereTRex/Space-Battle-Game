@@ -65,12 +65,6 @@ public class Helm : RoomScript
         //'Move' the ship by applying a force to the RigidBody2D of the rest of the level
         restOfLevelRb2D.AddForce(-transform.right * accelerationInput * acceleration);
         
-        if ((accelerationInput != 0) && (restOfLevelRb2D.velocity.x < maxSpeed || restOfLevelRb2D.velocity.y < maxSpeed)) { //Slightly reducing the cost of this terrible, terrible way to do this (But its the only way I've found that doesn't force me to rewrite 3 scripts)
-            foreach (Rigidbody2D enemyRB in restOfLevelRb2D.transform.GetComponentsInChildren<Rigidbody2D>())
-            {
-                enemyRB.AddForce(-transform.right * accelerationInput * acceleration);
-            }
-        }
         ConstrainVelocity();
 
         //Update the UI
@@ -88,13 +82,6 @@ public class Helm : RoomScript
         if (fullStop)
         {
             restOfLevelRb2D.velocity *= 1 - (fullStopSpeed * Time.deltaTime);
-            if (restOfLevelRb2D.velocity.x < maxSpeed || restOfLevelRb2D.velocity.y < maxSpeed)
-            { //Slightly reducing the cost of this terrible, terrible way to do this (But its the only way I've found that doesn't force me to rewrite 3 scripts)
-                foreach (Rigidbody2D enemyRB in restOfLevelRb2D.transform.GetComponentsInChildren<Rigidbody2D>())
-                {
-                    enemyRB.AddForce(-transform.right * accelerationInput * acceleration);
-                }
-            }
         }
     }
 

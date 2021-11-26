@@ -2,9 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TMPro;
 
 public class PlayerShip : MonoBehaviour
 {
+    [Space(20)]
+    
     [Header("Hull")]
     [SerializeField] float currentHull;
     float currentHullPercentage;
@@ -48,6 +51,8 @@ public class PlayerShip : MonoBehaviour
     [Header("UI")]
     [SerializeField] HealthBar healthBar;
     [SerializeField] GameObject gameOverUI;
+
+    [SerializeField] TextMeshProUGUI gameOverScoreUI;
 
 
 
@@ -196,8 +201,11 @@ public class PlayerShip : MonoBehaviour
         //Game Over
         gameOverUI.SetActive(true);
 
+        //Score
+        gameOverScoreUI.text = "" + ScoreManager.currentScore.ToString("00000");
+
         //Change Action Maps
-        
+
         //Restart When The Key is Pressed
     }
 }
