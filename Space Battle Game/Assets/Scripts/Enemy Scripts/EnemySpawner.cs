@@ -60,6 +60,7 @@ public class EnemySpawner : MonoBehaviour
         for (int i = 0; i < _numberToSpawn; i++)
         {
             Vector3 pos = new Vector3(Random.Range(mapBounds.x, -mapBounds.x), Random.Range(mapBounds.y, -mapBounds.y), 12);
+            Debug.Log(pos);
             GameObject enemy = Instantiate(enemyPrefabs[Random.Range(0, enemyPrefabs.Length - 1)], pos, Quaternion.Euler(0, 0, 0)).gameObject;
 
             enemy.transform.parent = GameObject.Find("Blank Level/Rest Of Level").transform;

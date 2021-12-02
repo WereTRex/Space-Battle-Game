@@ -42,7 +42,6 @@ public class WeaponRoom : RoomScript
         {
             if (!isZero)
             {
-                Debug.Log("PING!");
                 foreach (Weapon weapon in weapons)
                 {
                     weapon.currentAngle = 0;

@@ -48,6 +48,8 @@ public class Helm : RoomScript
 
     void Update()
     {
+        CheckIfDisplayButtonPrompt();
+
         // apply turn input
         float zTurnAcceleration = -1 * angleInput * horizontalInputAcceleration;
         zRotationVelocity += zTurnAcceleration * Time.deltaTime;
@@ -55,8 +57,6 @@ public class Helm : RoomScript
 
     void FixedUpdate()
     {
-        CheckIfDisplayButtonPrompt();
-
         if (controllingPlayer == null) { return; }
 
         //Get player input (Used for speed & angle)

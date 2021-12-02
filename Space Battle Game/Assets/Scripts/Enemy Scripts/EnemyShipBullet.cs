@@ -39,8 +39,10 @@ public class EnemyShipBullet : MonoBehaviour
         Debug.Log("Hit Player");
 
         // Deal damage
-        if (collision.gameObject.TryGetComponent(out PlayerShip playerShip))
+        if (collision.gameObject.layer == 11) //Check if it is a shield
         {
+            
+        } else if (collision.gameObject.TryGetComponent(out PlayerShip playerShip)) {
             Debug.Log("Damaging");
             playerShip.DealDamage(damage);
         } else if (collision.gameObject.transform.parent.TryGetComponent(out playerShip)) {
