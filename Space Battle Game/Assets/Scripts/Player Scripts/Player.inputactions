@@ -52,6 +52,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Press(behavior=1)"
+                },
+                {
+                    "name": "Restart",
+                    "type": "Button",
+                    "id": "6cf98077-e5c7-4713-8e9d-5b5ec0e0ea01",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(behavior=1)"
                 }
             ],
             "bindings": [
@@ -318,27 +326,11 @@
                     "action": "Decelerate",
                     "isComposite": false,
                     "isPartOfComposite": false
-                }
-            ]
-        },
-        {
-            "name": "Game Over",
-            "id": "e5fd66a2-6cda-45ea-9c86-4f9724dcda6a",
-            "actions": [
-                {
-                    "name": "Restart",
-                    "type": "Button",
-                    "id": "b1c4b75a-d953-4cb7-8fd0-d78df74ab815",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": ""
-                }
-            ],
-            "bindings": [
+                },
                 {
                     "name": "",
-                    "id": "e4b8295a-0352-42b4-9a7a-f5997e1094d4",
-                    "path": "<Keyboard>/anyKey",
+                    "id": "419c9f5a-e004-4058-8fc7-28a9011d3c9a",
+                    "path": "<Keyboard>/r",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
@@ -348,7 +340,7 @@
                 },
                 {
                     "name": "",
-                    "id": "1ec52292-c843-4d2c-8a5e-8b2b87024951",
+                    "id": "4ebd1d03-df2b-42f7-bbf8-8b468d02b39c",
                     "path": "<Gamepad>/start",
                     "interactions": "",
                     "processors": "",

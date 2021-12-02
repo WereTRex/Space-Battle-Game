@@ -48,6 +48,11 @@ public class EnemySpawner : MonoBehaviour
                 waveCooldownRemaining = waveCooldown;
             }
         }
+
+        foreach (GameObject enemy in livingEnemies)
+        {
+            if (enemy == null) { livingEnemies.Remove(enemy); return; }
+        }
     }
 
     public void SpawnEnemies(int _numberToSpawn)

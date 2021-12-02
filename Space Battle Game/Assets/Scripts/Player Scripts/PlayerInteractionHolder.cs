@@ -21,9 +21,21 @@ public class PlayerInteractionHolder : MonoBehaviour
         if (context.performed && this.gameObject.scene.IsValid())
         {
             int playerID = this.gameObject.GetComponent<PlayerInformationHolder>().GetPlayerID();
-            OnPlayerInteracted(this.gameObject, playerID);
+            OnPlayerInteracted?.Invoke(this.gameObject, playerID);
         }
     }
+
+
+
+    public void OnRestartPressed(InputAction.CallbackContext context)
+    {
+        if (context.performed && PlayerShip.GetIsDead())
+        {
+            //Restart
+            SceneManagerScript.Restart();
+        }
+    }
+
 
 
     public void OnAngleInputPressed(InputAction.CallbackContext context)

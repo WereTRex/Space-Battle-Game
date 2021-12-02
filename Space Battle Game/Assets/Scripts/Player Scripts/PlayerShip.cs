@@ -6,6 +6,8 @@ using TMPro;
 
 public class PlayerShip : MonoBehaviour
 {
+    public static bool dead;
+
     [Space(20)]
     
     [Header("Hull")]
@@ -204,8 +206,12 @@ public class PlayerShip : MonoBehaviour
         //Score
         gameOverScoreUI.text = "" + ScoreManager.currentScore.ToString("00000");
 
-        //Change Action Maps
+        //Set Dead to True (This'll allow the player to restart via the Player Interaction Holder)
+        dead = true;
+    }
 
-        //Restart When The Key is Pressed
+    public static bool GetIsDead()
+    {
+        return dead;
     }
 }

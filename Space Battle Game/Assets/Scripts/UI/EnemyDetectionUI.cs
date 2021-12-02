@@ -41,7 +41,7 @@ public class EnemyDetectionUI : MonoBehaviour
         counter = 0;
         foreach (GameObject enemy in enemyList)
         {
-            if (enemy == null) { enemyList.Remove(enemy); }
+            if (enemy == null) { enemyList.Remove(enemy); return; }
             
             //Get Enemy Positions
             enemyPosition = GetEnemyPosition(enemy);
