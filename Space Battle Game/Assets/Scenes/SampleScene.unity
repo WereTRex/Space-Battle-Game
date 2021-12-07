@@ -2528,7 +2528,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapBounds: {x: 1000, y: 578.9474}
   enemyPrefabs:
-  - {fileID: 545258770201480028, guid: 85e6cf63bfef5fa42a59ed48908b0083, type: 3}
+  - {fileID: 19126733120989442, guid: c4d4ab487c41f1d4e9d6ec524f788e95, type: 3}
+  - {fileID: 19126733120989442, guid: 2ad5dbd1b8e3db540a0cd3078d56bad9, type: 3}
   livingEnemies: []
   spawn: 0
   useWaves: 1

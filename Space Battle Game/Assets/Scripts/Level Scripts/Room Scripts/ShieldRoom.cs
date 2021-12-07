@@ -63,19 +63,18 @@ public class ShieldRoom : RoomScript
         }
         else
         {
-            shieldObjectSprite.color = new Color(shieldObjectSprite.color.r, shieldObjectSprite.color.g, shieldObjectSprite.color.b, 255 * (currentShieldHealth / maxShieldHealth));
             shieldObject.gameObject.SetActive(true);
+            shieldObjectSprite.color = new Color(shieldObjectSprite.color.r, shieldObjectSprite.color.g, shieldObjectSprite.color.b, 1 * (currentShieldHealth / maxShieldHealth));
         }
 
 
         if (controllingPlayer != null)
         {
+            //Get Inputs
+            inputValue = -playerInteractionHolder.GetAngleInput();
 
-        //Get Inputs
-        inputValue = -playerInteractionHolder.GetAngleInput();
-
-        //Rotate Shield
-        RotateShield();
+            //Rotate Shield
+            RotateShield();
         }
 
         previousShields = currentShieldHealth;
