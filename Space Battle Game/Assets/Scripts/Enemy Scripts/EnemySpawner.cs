@@ -44,7 +44,7 @@ public class EnemySpawner : MonoBehaviour
                 waveCooldownRemaining -= 1 * Time.deltaTime;
             else
             {
-                SpawnEnemies((2 * waveNumber) - 1);
+                SpawnEnemies(Mathf.CeilToInt(waveNumber * 1.5f));
                 waveCooldownRemaining = waveCooldown;
             }
         }
@@ -57,11 +57,13 @@ public class EnemySpawner : MonoBehaviour
 
     public void SpawnEnemies(int _numberToSpawn)
     {
-        for (int i = 0; i < _numberToSpawn; i++)
+        for (int i = 1; i <= _numberToSpawn; i++)
         {
             Vector3 pos = new Vector3(Random.Range(mapBounds.x, -mapBounds.x), Random.Range(mapBounds.y, -mapBounds.y), 12);
             Debug.Log(pos);
-            GameObject enemy = Instantiate(enemyPrefabs[Random.Range(0, enemyPrefabs.Length - 1)], pos, Quaternion.Euler(0, 0, 0)).gameObject;
+            GameObject enemy = Instantiate(enemyPrefabs[Random.Range(0, enemyPrefabs.Length)], pos, Quaternion.Euler(0, 0, 0)).gameObject;
+
+            Debug.Log(enemy);
 
             enemy.transform.parent = GameObject.Find("Blank Level/Rest Of Level").transform;
             livingEnemies.Add(enemy);

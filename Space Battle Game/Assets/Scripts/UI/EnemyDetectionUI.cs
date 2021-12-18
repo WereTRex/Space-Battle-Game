@@ -38,6 +38,11 @@ public class EnemyDetectionUI : MonoBehaviour
     
     private void Update()
     {
+        if (UIEnemyMarkers.Count != enemyList.Count)
+        {
+            ReInstantiateEnemyMarkers();
+        }
+
         counter = 0;
         foreach (GameObject enemy in enemyList)
         {
@@ -103,14 +108,23 @@ public class EnemyDetectionUI : MonoBehaviour
 
     void EnemyNumbersChanged()
     {
+        Debug.Log("The number of enemies has changed");
         FindEnemies();
-        InstantiateEnemyMarker();
+        ReInstantiateEnemyMarkers();
     }
 
-    void InstantiateEnemyMarker()
+    void ReInstantiateEnemyMarkers()
     {
+        //Clear the current Markers
+        foreach (Transform marker in UIEnemyMarkers)
+        {
+            Destroy(marker.gameObject);
+        }
+        UIEnemyMarkers.Clear();
+        
         //Instantiates a new Enemy Marker Prefab & adds it to the UIEnemyMarkers list at the same time
-        UIEnemyMarkers.Add(Instantiate(EnemyMarkerPrefab, this.transform).GetComponent<RectTransform>());
+        for (int i = 0; i < enemyList.Count; i++)
+            UIEnemyMarkers.Add(Instantiate(EnemyMarkerPrefab, this.transform).GetComponent<RectTransform>());
     }
 
     void FindEnemies()

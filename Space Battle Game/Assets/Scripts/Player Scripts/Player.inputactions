@@ -143,7 +143,7 @@
                 {
                     "name": "",
                     "id": "4242f297-5279-44ae-a610-d1112fd528ee",
-                    "path": "<Gamepad>/buttonWest",
+                    "path": "<Gamepad>/buttonNorth",
                     "interactions": "Press(behavior=1)",
                     "processors": "",
                     "groups": "Controller",
@@ -166,6 +166,17 @@
                     "name": "",
                     "id": "2fe3ec33-7a24-4896-a008-e09b13d06eef",
                     "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Controller",
+                    "action": "Fire Button",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a4f6bff9-dbca-46a3-98de-d841c301a031",
+                    "path": "<Gamepad>/rightTrigger",
                     "interactions": "",
                     "processors": "",
                     "groups": "Controller",

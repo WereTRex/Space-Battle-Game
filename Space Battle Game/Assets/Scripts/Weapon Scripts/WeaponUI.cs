@@ -24,12 +24,13 @@ public class WeaponUI : MonoBehaviour
         mainCrosshair.anchoredPosition = new Vector3(375, 0, 0);
         mainCrosshair.rotation = Quaternion.Euler(0, 0, 0);
 
+        input = 0;
+
         foreach (RectTransform crosshair in weaponCrosshairs)
         {
             Destroy(crosshair.gameObject);
         }
         weaponCrosshairs.Clear();
-
     }
 
     private void Update()

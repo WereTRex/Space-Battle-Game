@@ -83,7 +83,7 @@ public class ShieldRoom : RoomScript
 
     void RotateShield()
     {
-        shieldObject.RotateAround(Vector2.zero, Vector3.forward, inputValue * rotateRate * Time.deltaTime);
+        shieldObject.RotateAround(shieldObject.transform.position, Vector3.forward, inputValue * rotateRate * Time.deltaTime);
     }
 
     void RegenerateShields()
