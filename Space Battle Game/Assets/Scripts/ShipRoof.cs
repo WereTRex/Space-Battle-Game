@@ -7,6 +7,7 @@ public class ShipRoof : MonoBehaviour
 {
     [SerializeField] bool fadeIn;
     [SerializeField] float fadeInDuration;
+    int fadeInRequests = 0;
 
     [SerializeField] bool fadeOut;
     [SerializeField] float fadeOutDuration;
@@ -24,7 +25,9 @@ public class ShipRoof : MonoBehaviour
             Color tempColor = shipRoofRenderer.color;
             tempColor.a += fadeInSpeed * Time.deltaTime;
             shipRoofRenderer.color = tempColor;
-        } else if (fadeOut) {
+        }
+        else if (fadeOut)
+        {
             Color tempColor = shipRoofRenderer.color;
             if (shipRoofRenderer.color.a >= 0.99f)
             {
@@ -43,8 +46,6 @@ public class ShipRoof : MonoBehaviour
             Color tempColor = shipRoofRenderer.color;
             tempColor.a = 255;
             shipRoofRenderer.color = tempColor;
-
-            fadeIn = false;
         } else if (shipRoofRenderer.color.a < 0) {
             Color tempColor = shipRoofRenderer.color;
             tempColor.a = 0;
@@ -52,15 +53,22 @@ public class ShipRoof : MonoBehaviour
 
             fadeOut = false;
         }
+
+
+        if (fadeInRequests > 0)
+            fadeIn = true;
+        else
+            fadeIn = false;
     }
 
 
     public void StartFadeIn()
     {
-        fadeIn = true;
+        fadeInRequests += 1;
     }
     public void StartFadeOut()
     {
+        fadeInRequests -= 1;
         fadeOut = true;
     }
 
