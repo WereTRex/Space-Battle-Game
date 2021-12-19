@@ -61,6 +61,7 @@ public class Helm : RoomScript
 
         //Get player input (Used for speed & angle)
         GetPlayerInput();
+        Debug.Log(accelerationInput);
 
         //'Move' the ship by applying a force to the RigidBody2D of the rest of the level
         restOfLevelRb2D.AddForce(-transform.right * accelerationInput * acceleration);

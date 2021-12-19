@@ -32,6 +32,7 @@ public class WeaponRoom : RoomScript
     [Header("UI Variables")]
     [SerializeField] WeaponUI UIScript;
     float previousWeaponCount;
+    float previousTargetAngle;
 
 
     void Update()
@@ -45,9 +46,9 @@ public class WeaponRoom : RoomScript
                 foreach (Weapon weapon in weapons)
                 {
                     weapon.currentAngle = 0;
-                    isZero = true;
                 }
 
+                isZero = true;
                 targetAngle = 0;
             } 
             return;
@@ -80,7 +81,15 @@ public class WeaponRoom : RoomScript
             weapon.cooldownTimeRemaining -= 1 * Time.deltaTime;
         }
 
+
+        if (targetAngle != previousTargetAngle)
+        {
+            //Allows the main crosshair to move
+            UIScript.TargetAngleChanged(targetAngle);
+        }
+
         previousWeaponCount = weapons.Length;
+        previousTargetAngle = targetAngle;
     }
 
 
@@ -108,14 +117,15 @@ public class WeaponRoom : RoomScript
     void ReadAngleInputAndUpdateTargetAngle()
     {
         inputValue = playerInteractionHolder.GetAngleInput();
+        inputValue = Mathf.Clamp(inputValue, -1, 1);
 
         if (inputValue > 0.1f)
         {
-            targetAngle -= turnSpeed * Time.deltaTime;
+            targetAngle -= turnSpeed * inputValue * Time.deltaTime;
         }
         else if (inputValue < -0.1f)
         {
-            targetAngle += turnSpeed * Time.deltaTime;
+            targetAngle += turnSpeed * -inputValue * Time.deltaTime;
         }
 
 

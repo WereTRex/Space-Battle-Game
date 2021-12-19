@@ -318,10 +318,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0471180b499c268498df418f2e8c6c1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  acceleration: 50000
+  acceleration: 60000
   maxSpeed: 30
-  turnSpeed: 60
-  maxRotationSpeed: 80
+  turnSpeed: 70
+  maxRotationSpeed: 90
   rb2D: {fileID: 6475492435167993236}
   targetPos: {x: 120, y: -9.34}
 --- !u!114 &4728796806020886340

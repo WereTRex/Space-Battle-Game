@@ -300,7 +300,7 @@
                     "path": "<Gamepad>/leftTrigger",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Controller",
                     "action": "Acceleration Input",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -308,10 +308,10 @@
                 {
                     "name": "positive",
                     "id": "29e6f83e-c2c3-4671-9284-d5d3e4cf8824",
-                    "path": "<Gamepad>/leftTrigger",
+                    "path": "<Gamepad>/rightTrigger",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Controller",
                     "action": "Acceleration Input",
                     "isComposite": false,
                     "isPartOfComposite": true

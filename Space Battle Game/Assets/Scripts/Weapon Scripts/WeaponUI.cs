@@ -17,14 +17,12 @@ public class WeaponUI : MonoBehaviour
     [Space(5)]
 
     [SerializeField] float orbitSpeed;
-    [SerializeField] float input;
+    [SerializeField] float targetAngle;
 
     private void OnDisable()
     {
         mainCrosshair.anchoredPosition = new Vector3(375, 0, 0);
         mainCrosshair.rotation = Quaternion.Euler(0, 0, 0);
-
-        input = 0;
 
         foreach (RectTransform crosshair in weaponCrosshairs)
         {
@@ -35,13 +33,20 @@ public class WeaponUI : MonoBehaviour
 
     private void Update()
     {
-        mainCrosshair.RotateAround(transform.position, Vector3.forward, orbitSpeed * input * Time.deltaTime);
+        //mainCrosshair.RotateAround(transform.position, Vector3.forward, orbitSpeed * input * Time.deltaTime);
+        if (mainCrosshair.rotation.z != targetAngle)
+        {
+            mainCrosshair.localPosition = new Vector3(this.transform.localPosition.x + weaponCrosshairOrbitRadius, this.transform.localPosition.y, this.transform.localPosition.z);
+            mainCrosshair.RotateAround(transform.position, Vector3.forward, targetAngle);
+            mainCrosshair.rotation = new Quaternion(0, 0, 0, mainCrosshair.rotation.w);
+
+        }
     }
 
 
     public void RecieveValues(float _inputValue, float _orbitSpeed, List<float> _currentAngles)
     {
-        input = -_inputValue;
+        //input = -_inputValue;
         orbitSpeed = _orbitSpeed;
 
         //Get angles for all weaponCrosshairs
@@ -77,6 +82,12 @@ public class WeaponUI : MonoBehaviour
 
         yield return null;
     }
+
+    public void TargetAngleChanged(float newTargetAngle)
+    {
+        targetAngle = newTargetAngle;
+    }
+
 
     public int GetNumberOfCrosshairs()
     {

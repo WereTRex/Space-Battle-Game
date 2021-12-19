@@ -15,6 +15,8 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] Transform GFX;
     [SerializeField] float rotationSpeed;
+    
+    [SerializeField] Transform playerShip;
 
     [Space(10)]
     [Header("Audio")]
@@ -29,6 +31,12 @@ public class PlayerMovement : MonoBehaviour
     }
     #endregion
 
+    private void Awake()
+    {
+        playerShip = transform.parent.parent;
+    }
+
+
     private void FixedUpdate()
     {
         if (inMenu) { return; }
@@ -36,20 +44,16 @@ public class PlayerMovement : MonoBehaviour
         //Movement
         Vector2 movementDirection = new Vector2(movementInput.x, movementInput.y);
 
-        transform.Translate(movementDirection * moveSpeed * Time.fixedDeltaTime, Space.World);
+        transform.Translate((movementDirection * moveSpeed * Time.fixedDeltaTime), Space.Self);
 
         //Rotation
         if (movementDirection != Vector2.zero)
         {
             Quaternion toRotation = Quaternion.LookRotation(Vector3.forward, movementDirection);
+            toRotation = Quaternion.Euler(toRotation.eulerAngles.x, toRotation.eulerAngles.y, toRotation.eulerAngles.z + playerShip.rotation.eulerAngles.z);
+
             GFX.rotation = Quaternion.RotateTowards(GFX.rotation, toRotation, rotationSpeed * Time.deltaTime);
-
-            /*
-            GFX.up = movementDirection;
-            if (GFX.rotation.x != 0)
-                GFX.rotation = new Quaternion(0, 0, GFX.rotation.x, GFX.rotation.z);*/
         }
-
 
 
         //Movement Sound
