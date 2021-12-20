@@ -46,6 +46,7 @@ public class EnemySpawner : MonoBehaviour
             {
                 SpawnEnemies(Mathf.CeilToInt(waveNumber * 1.5f));
                 waveCooldownRemaining = waveCooldown;
+                waveNumber++;
             }
         }
 
