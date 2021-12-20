@@ -18,6 +18,6 @@ public class MoveWithLevelRB : MonoBehaviour
 
     void MoveSelf(float xChange, float yChange)
     {
-        transform.position = new Vector2(transform.position.x + xChange, transform.position.y + yChange);
+        transform.position = new Vector3(transform.position.x + xChange, transform.position.y + yChange, transform.position.z);
     }
 }
